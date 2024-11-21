@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="0dp">
 
+    <!-- 顯示區域 -->
     <TextView
         android:id="@+id/display"
         android:layout_width="0dp"
@@ -13,189 +14,219 @@
         android:background="#EEEEEE"
         android:gravity="end"
         android:textSize="26sp"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintVertical_weight="0.2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="0.2" />
+
     <TextView
         android:id="@+id/display_formula"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EEEEEE"
-        android:textColor="@android:color/darker_gray"
         android:gravity="start"
+        android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintVertical_weight="0.1"
-        app:layout_constraintEnd_toStartOf="@id/btn8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/display" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/display"
+        app:layout_constraintVertical_weight="0.1" />
 
     <!-- 第一行按鈕 -->
     <Button
-        android:id="@+id/btn7"
+        android:id="@+id/btnClear"
         style="@style/CalculatorButton"
-        android:text="7"
+        android:text="AC"
+        app:layout_constraintEnd_toStartOf="@id/btnSign"
         app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toStartOf="@id/btn8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/display_formula" />
+        app:layout_constraintTop_toBottomOf="@id/display_formula"
+        app:layout_constraintVertical_weight="0.15" />
 
     <Button
-        android:id="@+id/btn8"
+        android:id="@+id/btnSign"
         style="@style/CalculatorButton"
-        android:text="8"
+        android:text="+/-"
+        app:layout_constraintEnd_toStartOf="@id/btnPercent"
         app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toStartOf="@id/btn9"
-        app:layout_constraintStart_toEndOf="@id/btn7"
-        app:layout_constraintTop_toBottomOf="@id/display_formula" />
+        app:layout_constraintStart_toEndOf="@id/btnClear"
+        app:layout_constraintTop_toBottomOf="@id/display_formula"
+        app:layout_constraintVertical_weight="0.2" />
 
     <Button
-        android:id="@+id/btn9"
+        android:id="@+id/btnPercent"
         style="@style/CalculatorButton"
-        android:text="9"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
+        android:text="%"
         app:layout_constraintEnd_toStartOf="@id/btnDivide"
-        app:layout_constraintStart_toEndOf="@id/btn8"
-        app:layout_constraintTop_toBottomOf="@id/display_formula" />
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btnSign"
+        app:layout_constraintTop_toBottomOf="@id/display_formula"
+        app:layout_constraintVertical_weight="0.15" />
 
     <Button
         android:id="@+id/btnDivide"
         style="@style/CalculatorButton"
         android:text="/"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn9"
-        app:layout_constraintTop_toBottomOf="@id/display_formula" />
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btnPercent"
+        app:layout_constraintTop_toBottomOf="@id/display_formula"
+        app:layout_constraintVertical_weight="0.2" />
 
     <!-- 第二行按鈕 -->
+    <Button
+        android:id="@+id/btn7"
+        style="@style/CalculatorButton"
+        android:text="7"
+        app:layout_constraintEnd_toStartOf="@id/btn8"
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnClear"
+        app:layout_constraintVertical_weight="0.15" />
+
+    <Button
+        android:id="@+id/btn8"
+        style="@style/CalculatorButton"
+        android:text="8"
+        app:layout_constraintEnd_toStartOf="@id/btn9"
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn7"
+        app:layout_constraintTop_toBottomOf="@id/btnSign"
+        app:layout_constraintVertical_weight="0.2" />
+
+    <Button
+        android:id="@+id/btn9"
+        style="@style/CalculatorButton"
+        android:text="9"
+        app:layout_constraintEnd_toStartOf="@id/btnMultiply"
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn8"
+        app:layout_constraintTop_toBottomOf="@id/btnPercent"
+        app:layout_constraintVertical_weight="0.2" />
+
+    <Button
+        android:id="@+id/btnMultiply"
+        style="@style/CalculatorButton"
+        android:text="×"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn9"
+        app:layout_constraintTop_toBottomOf="@id/btnDivide"
+        app:layout_constraintVertical_weight="0.2" />
+
+    <!-- 第三行按鈕 -->
     <Button
         android:id="@+id/btn4"
         style="@style/CalculatorButton"
         android:text="4"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
         app:layout_constraintEnd_toStartOf="@id/btn5"
+        app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn7" />
+        app:layout_constraintTop_toBottomOf="@id/btn7"
+        app:layout_constraintVertical_weight="0.15" />
 
     <Button
         android:id="@+id/btn5"
         style="@style/CalculatorButton"
         android:text="5"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
         app:layout_constraintEnd_toStartOf="@id/btn6"
+        app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn4"
-        app:layout_constraintTop_toBottomOf="@id/btn8" />
+        app:layout_constraintTop_toBottomOf="@id/btn8"
+        app:layout_constraintVertical_weight="0.2" />
 
     <Button
         android:id="@+id/btn6"
         style="@style/CalculatorButton"
         android:text="6"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toStartOf="@id/btnMultiply"
-        app:layout_constraintStart_toEndOf="@id/btn5"
-        app:layout_constraintTop_toBottomOf="@id/btn9" />
-
-    <Button
-        android:id="@+id/btnMultiply"
-        style="@style/CalculatorButton"
-        android:text="*"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn6"
-        app:layout_constraintTop_toBottomOf="@id/btnDivide" />
-
-    <!-- 第三行按鈕 -->
-    <Button
-        android:id="@+id/btn1"
-        style="@style/CalculatorButton"
-        android:text="1"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toStartOf="@id/btn2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn4" />
-
-    <Button
-        android:id="@+id/btn2"
-        style="@style/CalculatorButton"
-        android:text="2"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toStartOf="@id/btn3"
-        app:layout_constraintStart_toEndOf="@id/btn1"
-        app:layout_constraintTop_toBottomOf="@id/btn5" />
-
-    <Button
-        android:id="@+id/btn3"
-        style="@style/CalculatorButton"
-        android:text="3"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
         app:layout_constraintEnd_toStartOf="@id/btnMinus"
-        app:layout_constraintStart_toEndOf="@id/btn2"
-        app:layout_constraintTop_toBottomOf="@id/btn6" />
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn5"
+        app:layout_constraintTop_toBottomOf="@id/btn9"
+        app:layout_constraintVertical_weight="0.2" />
 
     <Button
         android:id="@+id/btnMinus"
         style="@style/CalculatorButton"
         android:text="-"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn3"
-        app:layout_constraintTop_toBottomOf="@id/btnMultiply" />
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn6"
+        app:layout_constraintTop_toBottomOf="@id/btnMultiply"
+        app:layout_constraintVertical_weight="0.2" />
 
     <!-- 第四行按鈕 -->
     <Button
-        android:id="@+id/btnClear"
+        android:id="@+id/btn1"
         style="@style/CalculatorButton"
-        android:text="C"
+        android:text="1"
+        app:layout_constraintEnd_toStartOf="@id/btn2"
         app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toStartOf="@id/btn0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn1" />
+        app:layout_constraintTop_toBottomOf="@id/btn4"
+        app:layout_constraintVertical_weight="0.15" />
 
     <Button
-        android:id="@+id/btn0"
+        android:id="@+id/btn2"
         style="@style/CalculatorButton"
-        android:text="0"
+        android:text="2"
+        app:layout_constraintEnd_toStartOf="@id/btn3"
         app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
-        app:layout_constraintEnd_toStartOf="@id/btnEquals"
-        app:layout_constraintStart_toEndOf="@id/btnClear"
-        app:layout_constraintTop_toBottomOf="@id/btn2" />
+        app:layout_constraintStart_toEndOf="@id/btn1"
+        app:layout_constraintTop_toBottomOf="@id/btn5"
+        app:layout_constraintVertical_weight="0.2" />
 
     <Button
-        android:id="@+id/btnEquals"
+        android:id="@+id/btn3"
         style="@style/CalculatorButton"
-        android:text="="
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
+        android:text="3"
         app:layout_constraintEnd_toStartOf="@id/btnPlus"
-        app:layout_constraintStart_toEndOf="@id/btn0"
-        app:layout_constraintTop_toBottomOf="@id/btn3" />
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn2"
+        app:layout_constraintTop_toBottomOf="@id/btn6"
+        app:layout_constraintVertical_weight="0.2" />
 
     <Button
         android:id="@+id/btnPlus"
         style="@style/CalculatorButton"
         android:text="+"
-        app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintVertical_weight="0.2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnEquals"
-        app:layout_constraintTop_toBottomOf="@id/btnMinus" />
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn3"
+        app:layout_constraintTop_toBottomOf="@id/btnMinus"
+        app:layout_constraintVertical_weight="0.2" />
+
+    <!-- 第五行按鈕 -->
+    <Button
+        android:id="@+id/btn0"
+        style="@style/CalculatorButton"
+        android:text="0"
+        app:layout_constraintEnd_toStartOf="@id/btnDot"
+        app:layout_constraintHorizontal_weight="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn1"
+        app:layout_constraintVertical_weight="0.15" />
+
+    <Button
+        android:id="@+id/btnDot"
+        style="@style/CalculatorButton"
+        android:text="."
+        app:layout_constraintEnd_toStartOf="@id/btnEquals"
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btn0"
+        app:layout_constraintTop_toBottomOf="@id/btn3"
+        app:layout_constraintVertical_weight="0.2" />
+
+    <Button
+        android:id="@+id/btnEquals"
+        style="@style/CalculatorButton"
+        android:text="="
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btnDot"
+        app:layout_constraintTop_toBottomOf="@id/btnPlus"
+        app:layout_constraintVertical_weight="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

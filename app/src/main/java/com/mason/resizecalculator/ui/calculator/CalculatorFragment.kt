@@ -9,64 +9,49 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mason.resizecalculator.databinding.FragmentCalculatorBinding
-//import com.mason.resizecalculator.databinding.FragmentCalculatorLandBinding
 import com.mason.resizecalculator.databinding.CalculatorLayoutBinding
 
 class CalculatorFragment : Fragment() {
     private var _binding: FragmentCalculatorBinding? = null
-//    private var _bindingLand: FragmentCalculatorLandBinding? = null
-    
-    private val calculatorBinding : CalculatorLayoutBinding
+
+    private val calculatorBinding: CalculatorLayoutBinding
         get() = _binding!!.calculator1
-//        resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT -> _binding!!.calculator1
-//        else -> _bindingLand!!.calculator1
 
-//        set(value) {
-//            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//                _binding!!.calculator1 = value
-//            } else {
-//                _bindingLand!!.calculator1 = value
-//            }
-//        }
+    private val calculatorBinding2: CalculatorLayoutBinding?
+        get() = _binding!!.calculator2
 
-//    private val calculator2Binding get() = _bindingLand?.calculator2
-    
     private val viewModel: CalculatorViewModel by viewModels()
-//    private val viewModel2: CalculatorViewModel by viewModels()
+    private var screenOrientation = Configuration.ORIENTATION_UNDEFINED
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.e(Companion.TAG, "XXXXX, onCreateView: ")
-//        return if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            _binding = FragmentCalculatorBinding.inflate(inflater, container, false)
-            return _binding!!.root
-//        } else {
-//            _bindingLand = FragmentCalculatorLandBinding.inflate(inflater, container, false)
-//            _bindingLand!!.root
-//        }
+        Log.d(Companion.TAG, "#onCreateView: ")
+        _binding = FragmentCalculatorBinding.inflate(inflater, container, false)
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e(Companion.TAG, "XXXXX, onViewCreated: ")
+        Log.d(Companion.TAG, "#onViewCreated: ")
 
         setupCalculator(calculatorBinding, viewModel)
-        
+        screenOrientation = Configuration.ORIENTATION_PORTRAIT
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setupCalculator(calculatorBinding, viewModel)
+            setupCalculator(calculatorBinding2, viewModel, Configuration.ORIENTATION_LANDSCAPE)
+            screenOrientation = Configuration.ORIENTATION_LANDSCAPE
         }
     }
 
+    /*
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        Log.e(Companion.TAG, "XXXXX, onConfigurationChanged: ")
+        Log.e(Companion.TAG, "#onConfigurationChanged: ")
 
         // 清理當前的 binding
         _binding = null
-//        _bindingLand = null
 
         // 重新載入佈局
         val inflater = LayoutInflater.from(context)
@@ -81,17 +66,14 @@ class CalculatorFragment : Fragment() {
             setupCalculator(_binding?.calculator2, viewModel, 2)
         }
 
-        // 替換 Fragment 的視圖
-        val fragmentTransaction = parentFragmentManager.beginTransaction()
-        fragmentTransaction.replace(id, this)
-        fragmentTransaction.commit()
-//        container?.removeAllViews()
-//        container?.invalidate()
-//        container?.addView(if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) _binding?.root else _bindingLand?.root)
-//        onDestroyView();
     }
+     */
 
-    private fun setupCalculator(binding: CalculatorLayoutBinding?, viewModel: CalculatorViewModel, displayScreen: Int = 1) {
+    private fun setupCalculator(
+        binding: CalculatorLayoutBinding?,
+        viewModel: CalculatorViewModel,
+        displayScreen: Int = 1
+    ) {
         binding?.apply {
             btn0.setOnClickListener { viewModel.onNumberClick(0, if (displayScreen == 1) 1 else 2) }
             btn1.setOnClickListener { viewModel.onNumberClick(1, if (displayScreen == 1) 1 else 2) }
@@ -104,25 +86,56 @@ class CalculatorFragment : Fragment() {
             btn8.setOnClickListener { viewModel.onNumberClick(8, if (displayScreen == 1) 1 else 2) }
             btn9.setOnClickListener { viewModel.onNumberClick(9, if (displayScreen == 1) 1 else 2) }
 
-            btnPlus.setOnClickListener { viewModel.onOperationClick("+", if (displayScreen==1) 1 else 2) }
-            btnMinus.setOnClickListener { viewModel.onOperationClick("-", if (displayScreen==1) 1 else 2) }
-            btnMultiply.setOnClickListener { viewModel.onOperationClick("*",  if (displayScreen==1) 1 else 2) }
-            btnDivide.setOnClickListener { viewModel.onOperationClick("/",  if (displayScreen==1) 1 else 2) }
+            btnPlus.setOnClickListener {
+                viewModel.onOperationClick(
+                    "+",
+                    if (displayScreen == 1) 1 else 2
+                )
+            }
+            btnMinus.setOnClickListener {
+                viewModel.onOperationClick(
+                    "-",
+                    if (displayScreen == 1) 1 else 2
+                )
+            }
+            btnMultiply.setOnClickListener {
+                viewModel.onOperationClick(
+                    "*",
+                    if (displayScreen == 1) 1 else 2
+                )
+            }
+            btnDivide.setOnClickListener {
+                viewModel.onOperationClick(
+                    "/",
+                    if (displayScreen == 1) 1 else 2
+                )
+            }
 
-            btnEquals.setOnClickListener { viewModel.onEqualsClick( if (displayScreen==1) 1 else 2) }
-            btnClear.setOnClickListener { viewModel.onClearClick( if (displayScreen==1) 1 else 2) }
-            
-            viewModel.displayText.observe(viewLifecycleOwner) { text ->
-                display.text = text
+            btnEquals.setOnClickListener { viewModel.onEqualsClick(if (displayScreen == 1) 1 else 2) }
+            btnClear.setOnClickListener { viewModel.onClearClick(if (displayScreen == 1) 1 else 2) }
+
+            if (displayScreen == 1) {
+                viewModel.displayText1.observe(viewLifecycleOwner) { text ->
+                    display.text = text
+                }
+                viewModel.displayFormula1.observe(viewLifecycleOwner) { text ->
+                    displayFormula.text = text
+                }
+            } else {
+                viewModel.displayText2.observe(viewLifecycleOwner) { text ->
+                    display.text = text
+                }
+                viewModel.displayFormula2.observe(viewLifecycleOwner) { text ->
+                    displayFormula.text = text
+                }
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.e(Companion.TAG, "XXXXX, onDestroyView: ")
+        Log.d(Companion.TAG, "onDestroyView: ")
         _binding = null
-//        _bindingLand = null
     }
 
     companion object {
