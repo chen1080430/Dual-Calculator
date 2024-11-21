@@ -5,167 +5,119 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CalculatorViewModel : ViewModel() {
-    private val _displayText1 = MutableLiveData<String>()
-    val displayText1: LiveData<String> = _displayText1
+    private val calculator1 = CalculatorFeature()
+    private val calculator2 = CalculatorFeature()
+    // Calculator list
+//    private val calculatorList = listOf(calculator1, calculator2)
 
-    private val _displayFormula1 = MutableLiveData<StringBuilder>()
-    val displayFormula1: LiveData<StringBuilder> = _displayFormula1
+    private val _displayResult1 = MutableLiveData<String>()
+    val displayResult1: LiveData<String> = _displayResult1
 
-    private val _displayText2 = MutableLiveData<String>()
-    val displayText2: LiveData<String> = _displayText2
+    private val _displayFormula1 = MutableLiveData<String>()
+    val displayFormula1: LiveData<String> = _displayFormula1
 
-    private val _displayFormula2 = MutableLiveData<StringBuilder>()
-    val displayFormula2: LiveData<StringBuilder> = _displayFormula2
+    private val _displayResult2 = MutableLiveData<String>()
+    val displayResult2: LiveData<String> = _displayResult2
 
-    // 各自的計算狀態
-    private var isNewNumber1 = true
-    private var isNewNumber2 = true
-    private var formula1 = StringBuilder()
-    private var formula2 = StringBuilder()
+    private val _displayFormula2 = MutableLiveData<String>()
+    val displayFormula2: LiveData<String> = _displayFormula2
 
     init {
-        _displayText1.value = "0"
-        _displayText2.value = "0"
-        _displayFormula1.value = StringBuilder()
-        _displayFormula2.value = StringBuilder()
+        _displayResult1.value = "0"
+        _displayResult2.value = "0"
+        _displayFormula1.value = ""
+        _displayFormula2.value = ""
     }
 
     fun onNumberClick(number: Int, calculatorId: Int) {
-        when (calculatorId) {
-            1 -> handleNumberInput(number, _displayText1, formula1, _displayFormula1, isNewNumber1)
-            2 -> handleNumberInput(number, _displayText2, formula2, _displayFormula2, isNewNumber2)
+        val state = when (calculatorId) {
+            1 -> calculator1.inputNumber(number)
+            2 -> calculator2.inputNumber(number)
+            else -> return
         }
-    }
-
-    private fun handleNumberInput(
-        number: Int,
-        displayText: MutableLiveData<String>,
-        formula: StringBuilder,
-        displayFormula: MutableLiveData<StringBuilder>,
-        isNewNumber: Boolean
-    ) {
-        if (isNewNumber) {
-            displayText.value = number.toString()
-//            isNewNumber = false
-        } else {
-            displayText.value = "${displayText.value}$number"
-        }
-        formula.append(number)
-        displayFormula.value = formula
+        updateDisplay(calculatorId, state)
     }
 
     fun onOperationClick(op: String, calculatorId: Int) {
-        when (calculatorId) {
-            1 -> handleOperation(op, formula1, _displayFormula1, isNewNumber1)
-            2 -> handleOperation(op, formula2, _displayFormula2, isNewNumber2)
+        val receivedAnswer = when (calculatorId) {
+            1 -> calculator1.getAnswer()
+            2 -> calculator2.getAnswer()
+            else -> return
         }
+
+        val state = when (calculatorId) {
+            1 -> calculator1.inputOperation(op, if (receivedAnswer != 0.0) receivedAnswer else null)
+            2 -> calculator2.inputOperation(op, if (receivedAnswer != 0.0) receivedAnswer else null)
+            else -> return
+        }
+        updateDisplay(calculatorId, state)
     }
 
-    private fun handleOperation(
-        op: String,
-        formula: StringBuilder,
-        displayFormula: MutableLiveData<StringBuilder>,
-        isNewNumber: Boolean
-    ) {
-        formula.append(op)
-        displayFormula.value = formula
-//        isNewNumber = true
+    fun onDecimalClick(calculatorId: Int) {
+        val state = when (calculatorId) {
+            1 -> calculator1.inputDecimal()
+            2 -> calculator2.inputDecimal()
+            else -> return
+        }
+        updateDisplay(calculatorId, state)
+    }
+
+    fun onSignClick(calculatorId: Int) {
+        val state = when (calculatorId) {
+            1 -> calculator1.toggleSign()
+            2 -> calculator2.toggleSign()
+            else -> return
+        }
+        updateDisplay(calculatorId, state)
+    }
+
+    fun onPercentClick(calculatorId: Int) {
+        val state = when (calculatorId) {
+            1 -> calculator1.calculatePercent()
+            2 -> calculator2.calculatePercent()
+            else -> return
+        }
+        updateDisplay(calculatorId, state)
+    }
+
+    fun onDeleteClick(calculatorId: Int) {
+        val state = when (calculatorId) {
+            1 -> calculator1.delete()
+            2 -> calculator2.delete()
+            else -> return
+        }
+        updateDisplay(calculatorId, state)
     }
 
     fun onEqualsClick(calculatorId: Int) {
-        when (calculatorId) {
-            1 -> handleEquals(formula1, _displayText1, _displayFormula1, isNewNumber1)
-            2 -> handleEquals(formula2, _displayText2, _displayFormula2, isNewNumber2)
+        val state = when (calculatorId) {
+            1 -> calculator1.calculate()
+            2 -> calculator2.calculate()
+            else -> return
         }
-    }
-
-    private fun handleEquals(
-        formula: StringBuilder,
-        displayText: MutableLiveData<String>,
-        displayFormula: MutableLiveData<StringBuilder>,
-        isNewNumber: Boolean
-    ) {
-        val result = calculateFormula(formula)
-        displayText.value = result.toString()
-        formula.clear()
-        displayFormula.value = formula
-//        isNewNumber = true
+        updateDisplay(calculatorId, state)
     }
 
     fun onClearClick(calculatorId: Int) {
+        val state = when (calculatorId) {
+            1 -> calculator1.clear()
+            2 -> calculator2.clear()
+            else -> return
+        }
+        updateDisplay(calculatorId, state)
+    }
+
+    private fun updateDisplay(calculatorId: Int, state: CalculatorState) {
         when (calculatorId) {
-            1 -> handleClear(_displayText1, formula1, _displayFormula1, isNewNumber1)
-            2 -> handleClear(_displayText2, formula2, _displayFormula2, isNewNumber2)
+            1 -> {
+                _displayResult1.value = state.result
+                _displayFormula1.value = state.formula
+            }
+
+            2 -> {
+                _displayResult2.value = state.result
+                _displayFormula2.value = state.formula
+            }
         }
     }
-
-    private fun handleClear(
-        displayText: MutableLiveData<String>,
-        formula: StringBuilder,
-        displayFormula: MutableLiveData<StringBuilder>,
-        isNewNumber: Boolean
-    ) {
-        displayText.value = "0"
-        formula.clear()
-        displayFormula.value = formula
-//        isNewNumber = true
-    }
-
-    private fun calculateFormula(formula: StringBuilder): Double {
-        if (formula.isEmpty()) return 0.0
-
-        try {
-            val numbers = mutableListOf<Double>()
-            val operators = mutableListOf<Char>()
-            var currentNumber = StringBuilder()
-
-            formula.forEach { char ->
-                when {
-                    char.isDigit() -> currentNumber.append(char)
-                    char in setOf('+', '-', '*', '/') -> {
-                        if (currentNumber.isNotEmpty()) {
-                            numbers.add(currentNumber.toString().toDouble())
-                            currentNumber.clear()
-                        }
-                        operators.add(char)
-                    }
-                }
-            }
-            if (currentNumber.isNotEmpty()) {
-                numbers.add(currentNumber.toString().toDouble())
-            }
-
-            var i = 0
-            while (i < operators.size) {
-                if (operators[i] in setOf('*', '/')) {
-                    val result = when (operators[i]) {
-                        '*' -> numbers[i] * numbers[i + 1]
-                        '/' -> if (numbers[i + 1] != 0.0) numbers[i] / numbers[i + 1]
-                        else throw ArithmeticException("除數不能為零")
-
-                        else -> 0.0
-                    }
-                    numbers[i] = result
-                    numbers.removeAt(i + 1)
-                    operators.removeAt(i)
-                    i--
-                }
-                i++
-            }
-
-            var result = numbers[0]
-            for (i in operators.indices) {
-                result = when (operators[i]) {
-                    '+' -> result + numbers[i + 1]
-                    '-' -> result - numbers[i + 1]
-                    else -> result
-                }
-            }
-
-            return result
-
-        } catch (e: Exception) {
-            return 0.0
-        }
-    }
-} 
+}

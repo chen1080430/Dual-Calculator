@@ -74,60 +74,43 @@ class CalculatorFragment : Fragment() {
         viewModel: CalculatorViewModel,
         displayScreen: Int = 1
     ) {
+        // 計算器 ID 輔助函數
+        val calculatorId = if (displayScreen == 1) 1 else 2
+
         binding?.apply {
-            btn0.setOnClickListener { viewModel.onNumberClick(0, if (displayScreen == 1) 1 else 2) }
-            btn1.setOnClickListener { viewModel.onNumberClick(1, if (displayScreen == 1) 1 else 2) }
-            btn2.setOnClickListener { viewModel.onNumberClick(2, if (displayScreen == 1) 1 else 2) }
-            btn3.setOnClickListener { viewModel.onNumberClick(3, if (displayScreen == 1) 1 else 2) }
-            btn4.setOnClickListener { viewModel.onNumberClick(4, if (displayScreen == 1) 1 else 2) }
-            btn5.setOnClickListener { viewModel.onNumberClick(5, if (displayScreen == 1) 1 else 2) }
-            btn6.setOnClickListener { viewModel.onNumberClick(6, if (displayScreen == 1) 1 else 2) }
-            btn7.setOnClickListener { viewModel.onNumberClick(7, if (displayScreen == 1) 1 else 2) }
-            btn8.setOnClickListener { viewModel.onNumberClick(8, if (displayScreen == 1) 1 else 2) }
-            btn9.setOnClickListener { viewModel.onNumberClick(9, if (displayScreen == 1) 1 else 2) }
+            // 數字按鈕
+            btn0.setOnClickListener { viewModel.onNumberClick(0, calculatorId) }
+            btn1.setOnClickListener { viewModel.onNumberClick(1, calculatorId) }
+            btn2.setOnClickListener { viewModel.onNumberClick(2, calculatorId) }
+            btn3.setOnClickListener { viewModel.onNumberClick(3, calculatorId) }
+            btn4.setOnClickListener { viewModel.onNumberClick(4, calculatorId) }
+            btn5.setOnClickListener { viewModel.onNumberClick(5, calculatorId) }
+            btn6.setOnClickListener { viewModel.onNumberClick(6, calculatorId) }
+            btn7.setOnClickListener { viewModel.onNumberClick(7, calculatorId) }
+            btn8.setOnClickListener { viewModel.onNumberClick(8, calculatorId) }
+            btn9.setOnClickListener { viewModel.onNumberClick(9, calculatorId) }
 
-            btnPlus.setOnClickListener {
-                viewModel.onOperationClick(
-                    "+",
-                    if (displayScreen == 1) 1 else 2
-                )
-            }
-            btnMinus.setOnClickListener {
-                viewModel.onOperationClick(
-                    "-",
-                    if (displayScreen == 1) 1 else 2
-                )
-            }
-            btnMultiply.setOnClickListener {
-                viewModel.onOperationClick(
-                    "*",
-                    if (displayScreen == 1) 1 else 2
-                )
-            }
-            btnDivide.setOnClickListener {
-                viewModel.onOperationClick(
-                    "/",
-                    if (displayScreen == 1) 1 else 2
-                )
-            }
+            // 運算符按鈕
+            btnPlus.setOnClickListener { viewModel.onOperationClick("+", calculatorId) }
+            btnMinus.setOnClickListener { viewModel.onOperationClick("-", calculatorId) }
+            btnMultiply.setOnClickListener { viewModel.onOperationClick("*", calculatorId) }
+            btnDivide.setOnClickListener { viewModel.onOperationClick("/", calculatorId) }
 
-            btnEquals.setOnClickListener { viewModel.onEqualsClick(if (displayScreen == 1) 1 else 2) }
-            btnClear.setOnClickListener { viewModel.onClearClick(if (displayScreen == 1) 1 else 2) }
+            // 功能按鈕
+            btnSign.setOnClickListener { viewModel.onSignClick(calculatorId) }
+            btnPercent.setOnClickListener { viewModel.onPercentClick(calculatorId) }
+            btnDelete.setOnClickListener { viewModel.onDeleteClick(calculatorId) }
+            btnDot.setOnClickListener { viewModel.onDecimalClick(calculatorId) }
+            btnEquals.setOnClickListener { viewModel.onEqualsClick(calculatorId) }
+            btnClear.setOnClickListener { viewModel.onClearClick(calculatorId) }
 
+            // 觀察者設置
             if (displayScreen == 1) {
-                viewModel.displayText1.observe(viewLifecycleOwner) { text ->
-                    display.text = text
-                }
-                viewModel.displayFormula1.observe(viewLifecycleOwner) { text ->
-                    displayFormula.text = text
-                }
+                viewModel.displayResult1.observe(viewLifecycleOwner) { display.text = it }
+                viewModel.displayFormula1.observe(viewLifecycleOwner) { displayFormula.text = it }
             } else {
-                viewModel.displayText2.observe(viewLifecycleOwner) { text ->
-                    display.text = text
-                }
-                viewModel.displayFormula2.observe(viewLifecycleOwner) { text ->
-                    displayFormula.text = text
-                }
+                viewModel.displayResult2.observe(viewLifecycleOwner) { display.text = it }
+                viewModel.displayFormula2.observe(viewLifecycleOwner) { displayFormula.text = it }
             }
         }
     }

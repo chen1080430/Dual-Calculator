@@ -206,20 +206,32 @@
         style="@style/CalculatorButton"
         android:text="0"
         app:layout_constraintEnd_toStartOf="@id/btnDot"
-        app:layout_constraintHorizontal_weight="0.52"
+        app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn1"
         app:layout_constraintVertical_weight="0.15" />
+
 
     <Button
         android:id="@+id/btnDot"
         style="@style/CalculatorButton"
         android:text="."
-        app:layout_constraintEnd_toStartOf="@id/btnEquals"
+        app:layout_constraintEnd_toStartOf="@id/btnDelete"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn0"
+        app:layout_constraintTop_toBottomOf="@id/btn2"
+        app:layout_constraintVertical_weight="0.15" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        style="@style/CalculatorButton"
+        android:text="Del"
+        app:layout_constraintEnd_toStartOf="@id/btnEquals"
+        app:layout_constraintHorizontal_weight="0.25"
+        app:layout_constraintStart_toEndOf="@id/btnDot"
         app:layout_constraintTop_toBottomOf="@id/btn3"
-        app:layout_constraintVertical_weight="0.2" />
+        app:layout_constraintVertical_weight="0.15" />
+
 
     <Button
         android:id="@+id/btnEquals"
@@ -227,8 +239,8 @@
         android:text="="
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
-        app:layout_constraintStart_toEndOf="@id/btnDot"
+        app:layout_constraintStart_toEndOf="@id/btnDelete"
         app:layout_constraintTop_toBottomOf="@id/btnPlus"
-        app:layout_constraintVertical_weight="0.2" />
+        app:layout_constraintVertical_weight="0.15" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
