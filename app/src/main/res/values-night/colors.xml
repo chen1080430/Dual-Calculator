@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="calculator_display_text_color">@color/white</color>
+    <color name="calculator_display_background_color">#E92A2A2A</color>
+
+    <color name="calculator_button_text_color">@color/white</color>
+    <color name="calculator_button_background_number">#E9525252</color>
+
+</resources>

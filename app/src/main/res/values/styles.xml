@@ -6,10 +6,26 @@
         <item name="android:layout_margin">4dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:padding">4dp</item>
+        <item name="android:backgroundTint">@color/calculator_button_background_number</item>
+        <item name="android:textColor">@color/calculator_button_text_color</item>
     </style>
 
     <style name="CalculatorDisplay">
         <item name="android:layout_marginHorizontal">4dp</item>
         <item name="android:paddingHorizontal">4dp</item>
+        <item name="android:textColor">@color/calculator_display_text_color</item>
+        <item name="android:backgroundTint">@color/calculator_display_background_color</item>
+    </style>
+
+    <style name="CalculatorButton_Function" parent="CalculatorButton">
+        <item name="android:backgroundTint">@android:color/darker_gray</item>
+    </style>
+
+    <style name="CalculatorButton_Function2" parent="CalculatorButton">
+        <item name="android:backgroundTint">?colorPrimary</item>
+    </style>
+
+    <style name="CalculatorButton_Switch" parent="CalculatorButton">
+        <item name="android:backgroundTint">@android:color/holo_green_dark</item>
     </style>
 </resources>

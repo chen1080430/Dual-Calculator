@@ -39,7 +39,7 @@
     <!-- 第一行按鈕 -->
     <Button
         android:id="@+id/btnClear"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function"
         android:text="AC"
         app:layout_constraintEnd_toStartOf="@id/btnSign"
         app:layout_constraintHorizontal_weight="0.25"
@@ -49,7 +49,7 @@
 
     <Button
         android:id="@+id/btnSign"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function"
         android:text="+/-"
         app:layout_constraintEnd_toStartOf="@id/btnPercent"
         app:layout_constraintHorizontal_weight="0.25"
@@ -59,7 +59,7 @@
 
     <Button
         android:id="@+id/btnPercent"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function"
         android:text="%"
         app:layout_constraintEnd_toStartOf="@id/btnDivide"
         app:layout_constraintHorizontal_weight="0.25"
@@ -69,7 +69,7 @@
 
     <Button
         android:id="@+id/btnDivide"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function2"
         android:text="/"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
@@ -110,7 +110,7 @@
 
     <Button
         android:id="@+id/btnMultiply"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function2"
         android:text="×"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
@@ -151,7 +151,7 @@
 
     <Button
         android:id="@+id/btnMinus"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function2"
         android:text="-"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
@@ -192,7 +192,7 @@
 
     <Button
         android:id="@+id/btnPlus"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function2"
         android:text="+"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
@@ -235,7 +235,7 @@
 
     <Button
         android:id="@+id/btnEquals"
-        style="@style/CalculatorButton"
+        style="@style/CalculatorButton_Function2"
         android:text="="
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
