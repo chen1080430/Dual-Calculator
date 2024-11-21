@@ -9,6 +9,7 @@
     <!-- 顯示區域 -->
     <TextView
         android:id="@+id/display"
+        style="@style/CalculatorDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#EEEEEE"
@@ -22,6 +23,7 @@
 
     <TextView
         android:id="@+id/display_formula"
+        style="@style/CalculatorDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#EEEEEE"
