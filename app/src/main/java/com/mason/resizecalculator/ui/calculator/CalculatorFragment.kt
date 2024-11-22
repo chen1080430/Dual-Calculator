@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mason.resizecalculator.databinding.FragmentCalculatorBinding
 import com.mason.resizecalculator.databinding.CalculatorLayoutBinding
+import com.mason.resizecalculator.databinding.CalculatorSwitchLayoutBinding
 
 class CalculatorFragment : Fragment() {
     private var _binding: FragmentCalculatorBinding? = null
@@ -19,6 +20,9 @@ class CalculatorFragment : Fragment() {
 
     private val calculatorBinding2: CalculatorLayoutBinding?
         get() = _binding!!.calculator2
+
+    private val calculatorSwitchLayoutBinding: CalculatorSwitchLayoutBinding?
+        get() = _binding!!.calculatorSwitchLayout
 
     private val viewModel: CalculatorViewModel by viewModels()
     private var screenOrientation = Configuration.ORIENTATION_UNDEFINED
@@ -41,7 +45,19 @@ class CalculatorFragment : Fragment() {
         screenOrientation = Configuration.ORIENTATION_PORTRAIT
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setupCalculator(calculatorBinding2, viewModel, Configuration.ORIENTATION_LANDSCAPE)
+            setupCalculatorSwitchLayout(calculatorSwitchLayoutBinding, viewModel)
             screenOrientation = Configuration.ORIENTATION_LANDSCAPE
+        }
+    }
+
+    private fun setupCalculatorSwitchLayout(
+        calculatorSwitchLayoutBinding: CalculatorSwitchLayoutBinding?,
+        viewModel: CalculatorViewModel
+    ) {
+        calculatorSwitchLayoutBinding?.apply {
+            buttonToLeft.setOnClickListener { viewModel.onMoveToLeftClick()}
+            buttonToRight.setOnClickListener { viewModel.onMoveToRightClick()}
+            btnResize.setOnClickListener{ viewModel.onResizeClick()}
         }
     }
 
@@ -78,7 +94,6 @@ class CalculatorFragment : Fragment() {
         val calculatorId = if (displayScreen == 1) 1 else 2
 
         binding?.apply {
-            // 數字按鈕
             btn0.setOnClickListener { viewModel.onNumberClick(0, calculatorId) }
             btn1.setOnClickListener { viewModel.onNumberClick(1, calculatorId) }
             btn2.setOnClickListener { viewModel.onNumberClick(2, calculatorId) }
@@ -90,13 +105,11 @@ class CalculatorFragment : Fragment() {
             btn8.setOnClickListener { viewModel.onNumberClick(8, calculatorId) }
             btn9.setOnClickListener { viewModel.onNumberClick(9, calculatorId) }
 
-            // 運算符按鈕
             btnPlus.setOnClickListener { viewModel.onOperationClick("+", calculatorId) }
             btnMinus.setOnClickListener { viewModel.onOperationClick("-", calculatorId) }
             btnMultiply.setOnClickListener { viewModel.onOperationClick("*", calculatorId) }
             btnDivide.setOnClickListener { viewModel.onOperationClick("/", calculatorId) }
 
-            // 功能按鈕
             btnSign.setOnClickListener { viewModel.onSignClick(calculatorId) }
             btnPercent.setOnClickListener { viewModel.onPercentClick(calculatorId) }
             btnDelete.setOnClickListener { viewModel.onDeleteClick(calculatorId) }
@@ -104,13 +117,14 @@ class CalculatorFragment : Fragment() {
             btnEquals.setOnClickListener { viewModel.onEqualsClick(calculatorId) }
             btnClear.setOnClickListener { viewModel.onClearClick(calculatorId) }
 
-            // 觀察者設置
             if (displayScreen == 1) {
                 viewModel.displayResult1.observe(viewLifecycleOwner) { display.text = it }
                 viewModel.displayFormula1.observe(viewLifecycleOwner) { displayFormula.text = it }
+//                display.maxHeight = display.height
             } else {
                 viewModel.displayResult2.observe(viewLifecycleOwner) { display.text = it }
                 viewModel.displayFormula2.observe(viewLifecycleOwner) { displayFormula.text = it }
+//                display.maxHeight = display.height
             }
         }
     }
@@ -119,6 +133,9 @@ class CalculatorFragment : Fragment() {
         super.onDestroyView()
         Log.d(Companion.TAG, "onDestroyView: ")
         _binding = null
+    }
+
+    fun updateCalculatorView() {
     }
 
     companion object {

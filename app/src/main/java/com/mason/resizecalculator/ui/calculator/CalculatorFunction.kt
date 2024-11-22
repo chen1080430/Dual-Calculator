@@ -21,6 +21,18 @@ class CalculatorFeature {
         return state
     }
 
+    fun inputCompleteNumber(number: Double): CalculatorState {
+        currentNumber.clear()
+        isNewNumber = false
+        currentNumber.append(number)
+
+        state.updateState(
+            newResult = currentNumber.toString(),
+            newFormula = buildDisplayFormula()
+        )
+        return state
+    }
+
     fun inputDecimal(): CalculatorState {
         if (isNewNumber) {
             currentNumber.clear()
@@ -196,10 +208,24 @@ class CalculatorFeature {
     }
 
     private fun formatNumber(number: Double): String {
-        return if (number == number.toLong().toDouble()) {
-            number.toLong().toString()
-        } else {
-            number.toString()
+//        return if (number == number.toLong().toDouble()) {
+//            number.toLong().toString()
+//        } else {
+//            number.toString()
+//        }
+        return when {
+//            number == number.toLong().toDouble() -> {
+//                number.toLong().toString()
+//            }
+            number % 1.0 == 0.0 -> {
+                number.toLong().toString()
+            }
+            else -> {
+                java.math.BigDecimal(number)
+                    .setScale(4, java.math.RoundingMode.HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
+            }
         }
     }
 

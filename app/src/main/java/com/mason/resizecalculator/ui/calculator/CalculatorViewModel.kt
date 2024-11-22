@@ -120,4 +120,18 @@ class CalculatorViewModel : ViewModel() {
             }
         }
     }
+
+    fun onMoveToLeftClick() {
+        updateDisplay(1, calculator1.inputCompleteNumber(calculator2.getAnswer()))
+
+    }
+
+    fun onMoveToRightClick() {
+        calculator2.inputCompleteNumber(calculator1.getAnswer())
+        updateDisplay(2, calculator2.inputCompleteNumber(calculator1.getAnswer()))
+    }
+
+    fun onResizeClick() {
+        TODO("Not yet implemented")
+    }
 }
