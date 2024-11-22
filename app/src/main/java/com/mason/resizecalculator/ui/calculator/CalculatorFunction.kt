@@ -219,7 +219,7 @@ class CalculatorFeature {
 
             else -> {
                 java.math.BigDecimal(number)
-                    .setScale(4, java.math.RoundingMode.HALF_UP)
+                    .setScale(10, java.math.RoundingMode.HALF_UP)
                     .stripTrailingZeros()
                     .toPlainString()
             }
