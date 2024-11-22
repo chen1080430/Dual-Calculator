@@ -23,8 +23,11 @@ class CalculatorFeature {
 
     fun inputCompleteNumber(number: Double): CalculatorState {
         currentNumber.clear()
-        isNewNumber = false
-        currentNumber.append(number)
+        currentNumber.append(removeDot(number))
+        if (isNewNumber) {
+            isNewNumber = false
+            answer = number
+        }
 
         state.updateState(
             newResult = currentNumber.toString(),
@@ -39,7 +42,7 @@ class CalculatorFeature {
             currentNumber.append("0")
             isNewNumber = false
         }
-        // 確保當前數字還沒有小數點
+
         if (!currentNumber.contains(".")) {
             currentNumber.append(".")
         }
@@ -100,7 +103,6 @@ class CalculatorFeature {
 
     fun delete(): CalculatorState {
         when {
-            // 1. 刪除當前數字的最後一位
             currentNumber.isNotEmpty() -> {
                 currentNumber.deleteCharAt(currentNumber.length - 1)
                 if (currentNumber.isEmpty()) {
@@ -108,12 +110,10 @@ class CalculatorFeature {
                     isNewNumber = true
                 }
             }
-            // 2. 如果formula不為空，刪除最後一個字符
             formula.isNotEmpty() -> {
                 val lastChar = formula.last()
                 formula.deleteCharAt(formula.length - 1)
 
-                // 如果刪除的是運算符，把前面的數字提取出來作為currentNumber
                 if (lastChar in setOf('+', '-', '*', '/')) {
                     val lastNumberIndex =
                         formula.indexOfLast { it in setOf('+', '-', '*', '/') } + 1
@@ -137,16 +137,11 @@ class CalculatorFeature {
         return state
     }
 
-    fun inputOperation(op: String, receivedAnswer: Double? = null): CalculatorState {
-        if (receivedAnswer != null) {
-            formula.clear()
-            currentNumber.clear()
-            currentNumber.append(formatNumber(receivedAnswer))
-        }
-
-        // 將當前數字加入公式
+    fun inputOperation(op: String): CalculatorState {
         if (currentNumber.isNotEmpty()) {
             formula.append(currentNumber)
+        } else if (formula.last() in setOf('+', '-', '*', '/')) {
+            formula.deleteCharAt(formula.length - 1)
         } else if (formula.isEmpty() && answer != 0.0) {
             formula.append(formatNumber(answer))
         }
@@ -167,18 +162,19 @@ class CalculatorFeature {
 
         try {
             val fullFormula = StringBuilder(formula)
-            if (currentNumber.isNotEmpty()) {
-                fullFormula.append(currentNumber)
-            }
+            fullFormula.append(currentNumber.ifEmpty { 0 })
 
             answer = calculateFormula(fullFormula)
+            val formatAnswer = formatNumber(answer)
+            fullFormula.append("=")
+            fullFormula.append(formatAnswer)
             formula.clear()
             currentNumber.clear()
-            currentNumber.append(formatNumber(answer))
+            currentNumber.append(formatAnswer)
             isNewNumber = true
 
             state.updateState(
-                newResult = formatNumber(answer),
+                newResult = formatAnswer,
                 newFormula = fullFormula.toString()
             )
         } catch (e: Exception) {
@@ -220,6 +216,7 @@ class CalculatorFeature {
             number % 1.0 == 0.0 -> {
                 number.toLong().toString()
             }
+
             else -> {
                 java.math.BigDecimal(number)
                     .setScale(4, java.math.RoundingMode.HALF_UP)
@@ -231,15 +228,12 @@ class CalculatorFeature {
 
     private fun calculateFormula(formula: StringBuilder): Double {
         try {
-            // 1. 分解算式為數字和運算符
             val numbers = mutableListOf<Double>()
             val operators = mutableListOf<Char>()
             var currentNumber = StringBuilder()
 
-            // 處理每個字符
             formula.forEachIndexed { index, char ->
                 when {
-                    // 數字、小數點或負號（在開頭或運算符後）
                     char.isDigit() || char == '.' ||
                             (char == '-' && (index == 0 || formula[index - 1] in setOf(
                                 '+',
@@ -249,14 +243,11 @@ class CalculatorFeature {
                             ))) -> {
                         currentNumber.append(char)
                     }
-                    // 運算符
                     char in setOf('+', '-', '*', '/') -> {
-                        // 如果前面有數字，加入數字列表
                         if (currentNumber.isNotEmpty()) {
                             numbers.add(currentNumber.toString().toDouble())
                             currentNumber.clear()
                         }
-                        // 如果不是負號，加入運算符列表
                         if (char != '-' || (index > 0 && formula[index - 1] !in setOf(
                                 '+',
                                 '-',
@@ -270,12 +261,12 @@ class CalculatorFeature {
                 }
             }
 
-            // 處理最後一個數字
-            if (currentNumber.isNotEmpty()) {
-                numbers.add(currentNumber.toString().toDouble())
+            if (currentNumber.isEmpty()) {
+                currentNumber = StringBuilder("0")
+                this.currentNumber = currentNumber
             }
+            numbers.add(currentNumber.toString().toDouble())
 
-            // 2. 先處理乘除運算
             var i = 0
             while (i < operators.size) {
                 if (operators[i] in setOf('*', '/')) {
@@ -289,7 +280,6 @@ class CalculatorFeature {
                         else -> throw IllegalStateException("未知運算符")
                     }
 
-                    // 更新結果並移除已使用的數字和運算符
                     numbers[i] = result
                     numbers.removeAt(i + 1)
                     operators.removeAt(i)
@@ -298,7 +288,6 @@ class CalculatorFeature {
                 }
             }
 
-            // 3. 再處理加減運算
             var result = numbers[0]
             for (i in operators.indices) {
                 result = when (operators[i]) {
@@ -316,6 +305,14 @@ class CalculatorFeature {
                 is ArithmeticException -> throw e
                 else -> throw IllegalStateException("計算錯誤")
             }
+        }
+    }
+
+    private fun removeDot(number: Double): String {
+        return if (number % 1.0 == 0.0) {
+            number.toLong().toString()
+        } else {
+            number.toString()
         }
     }
 }

@@ -46,8 +46,8 @@ class CalculatorViewModel : ViewModel() {
         }
 
         val state = when (calculatorId) {
-            1 -> calculator1.inputOperation(op, if (receivedAnswer != 0.0) receivedAnswer else null)
-            2 -> calculator2.inputOperation(op, if (receivedAnswer != 0.0) receivedAnswer else null)
+            1 -> calculator1.inputOperation(op)
+            2 -> calculator2.inputOperation(op)
             else -> return
         }
         updateDisplay(calculatorId, state)
