@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel
 class CalculatorViewModel : ViewModel() {
     private val calculator1 = CalculatorFeature()
     private val calculator2 = CalculatorFeature()
-    // Calculator list
-//    private val calculatorList = listOf(calculator1, calculator2)
 
     private val _displayResult1 = MutableLiveData<String>()
     val displayResult1: LiveData<String> = _displayResult1
@@ -39,12 +37,6 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun onOperationClick(op: String, calculatorId: Int) {
-        val receivedAnswer = when (calculatorId) {
-            1 -> calculator1.getAnswer()
-            2 -> calculator2.getAnswer()
-            else -> return
-        }
-
         val state = when (calculatorId) {
             1 -> calculator1.inputOperation(op)
             2 -> calculator2.inputOperation(op)

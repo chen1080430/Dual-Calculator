@@ -14,6 +14,13 @@ class CalculatorFeature {
         }
         currentNumber.append(number)
 
+        if (currentNumber.startsWith("0")
+            && currentNumber.length > 1
+            && currentNumber[1] != '.'
+        ) {
+            currentNumber.deleteCharAt(0)
+        }
+
         state.updateState(
             newResult = currentNumber.toString(),
             newFormula = buildDisplayFormula()
@@ -86,10 +93,13 @@ class CalculatorFeature {
         }
 
         try {
-            val number = currentNumber.toString().toDouble()
-            val result = number / 100.0
+            val number = java.math.BigDecimal(currentNumber.toString())
+            val hundred = java.math.BigDecimal("100")
+            val result = number.divide(hundred, 10, java.math.RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .toPlainString()
             currentNumber.clear()
-            currentNumber.append(formatNumber(result))
+            currentNumber.append(result)
 
             state.updateState(
                 newResult = currentNumber.toString(),
@@ -110,6 +120,7 @@ class CalculatorFeature {
                     isNewNumber = true
                 }
             }
+
             formula.isNotEmpty() -> {
                 val lastChar = formula.last()
                 formula.deleteCharAt(formula.length - 1)
@@ -204,15 +215,7 @@ class CalculatorFeature {
     }
 
     private fun formatNumber(number: Double): String {
-//        return if (number == number.toLong().toDouble()) {
-//            number.toLong().toString()
-//        } else {
-//            number.toString()
-//        }
         return when {
-//            number == number.toLong().toDouble() -> {
-//                number.toLong().toString()
-//            }
             number % 1.0 == 0.0 -> {
                 number.toLong().toString()
             }
@@ -243,6 +246,7 @@ class CalculatorFeature {
                             ))) -> {
                         currentNumber.append(char)
                     }
+
                     char in setOf('+', '-', '*', '/') -> {
                         if (currentNumber.isNotEmpty()) {
                             numbers.add(currentNumber.toString().toDouble())
@@ -274,7 +278,9 @@ class CalculatorFeature {
                         '*' -> numbers[i] * numbers[i + 1]
                         '/' -> {
                             if (numbers[i + 1] == 0.0) throw ArithmeticException("除數不能為零")
-                            numbers[i] / numbers[i + 1]
+                            val num1 = java.math.BigDecimal(numbers[i].toString())
+                            val num2 = java.math.BigDecimal(numbers[i + 1].toString())
+                            num1.divide(num2, 10, java.math.RoundingMode.HALF_UP).toDouble()
                         }
 
                         else -> throw IllegalStateException("未知運算符")
@@ -320,7 +326,6 @@ class CalculatorFeature {
 data class CalculatorState(
     var result: String = "0",
     var formula: String = "",
-    var currentNumber: Double = 0.0
 ) {
     fun updateState(newResult: String, newFormula: String) {
         result = newResult
@@ -330,6 +335,5 @@ data class CalculatorState(
     fun clear() {
         result = "0"
         formula = ""
-        currentNumber = 0.0
     }
 }

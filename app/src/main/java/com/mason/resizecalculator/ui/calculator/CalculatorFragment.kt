@@ -120,11 +120,11 @@ class CalculatorFragment : Fragment() {
             if (displayScreen == 1) {
                 viewModel.displayResult1.observe(viewLifecycleOwner) { display.text = it }
                 viewModel.displayFormula1.observe(viewLifecycleOwner) { displayFormula.text = it }
-//                display.maxHeight = display.height
             } else {
                 viewModel.displayResult2.observe(viewLifecycleOwner) { display.text = it }
-                viewModel.displayFormula2.observe(viewLifecycleOwner) { displayFormula.text = it }
-//                display.maxHeight = display.height
+                viewModel.displayFormula2.observe(viewLifecycleOwner) {
+                    displayFormula.text = it
+                }
             }
         }
     }
