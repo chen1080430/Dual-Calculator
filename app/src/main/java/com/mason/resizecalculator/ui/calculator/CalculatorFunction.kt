@@ -1,9 +1,12 @@
 package com.mason.resizecalculator.ui.calculator
 
+import java.math.BigDecimal
+import java.math.RoundingMode
+
 class CalculatorFeature {
     private var formula = StringBuilder()
     private var currentNumber = StringBuilder()
-    private var answer = 0.0
+    private var answer = BigDecimal.ZERO
     private var isNewNumber = true
     private val state = CalculatorState()
 
@@ -33,7 +36,7 @@ class CalculatorFeature {
         currentNumber.append(removeDot(number))
         if (isNewNumber) {
             isNewNumber = false
-            answer = number
+            answer = BigDecimal(number)
         }
 
         state.updateState(
@@ -63,7 +66,7 @@ class CalculatorFeature {
 
     fun toggleSign(): CalculatorState {
         if (currentNumber.isEmpty()) {
-            if (answer != 0.0) {
+            if (answer != BigDecimal.ZERO) {
                 currentNumber.append(answer)
             } else {
                 return state
@@ -85,7 +88,7 @@ class CalculatorFeature {
 
     fun calculatePercent(): CalculatorState {
         if (currentNumber.isEmpty()) {
-            if (answer != 0.0) {
+            if (answer != BigDecimal.ZERO) {
                 currentNumber.append(answer)
             } else {
                 return state
@@ -93,9 +96,9 @@ class CalculatorFeature {
         }
 
         try {
-            val number = java.math.BigDecimal(currentNumber.toString())
-            val hundred = java.math.BigDecimal("100")
-            val result = number.divide(hundred, 10, java.math.RoundingMode.HALF_UP)
+            val number = BigDecimal(currentNumber.toString())
+            val hundred = BigDecimal("100")
+            val result = number.divide(hundred, 10, RoundingMode.HALF_UP)
                 .stripTrailingZeros()
                 .toPlainString()
             currentNumber.clear()
@@ -149,12 +152,24 @@ class CalculatorFeature {
     }
 
     fun inputOperation(op: String): CalculatorState {
-        if (currentNumber.isNotEmpty()) {
+        if (formula.isEmpty() && currentNumber.isEmpty() && op == "-") {
+            currentNumber.append(op)
+            isNewNumber = false
+            state.updateState(
+                newResult = currentNumber.toString(),
+                newFormula = currentNumber.toString()
+            )
+            return state
+        }
+
+        if (currentNumber.isEmpty() && formula.isEmpty() && answer == BigDecimal.ZERO) {
+            toggleSign()
+        } else if (currentNumber.isNotEmpty()) {
             formula.append(currentNumber)
-        } else if (formula.last() in setOf('+', '-', '*', '/')) {
+        } else if (formula.isEmpty() && answer != BigDecimal.ZERO) {
+            formula.append(answer)
+        } else if (formula.isNotEmpty() && formula.last() in setOf('+', '-', '*', '/')) {
             formula.deleteCharAt(formula.length - 1)
-        } else if (formula.isEmpty() && answer != 0.0) {
-            formula.append(formatNumber(answer))
         }
 
         formula.append(op)
@@ -162,7 +177,7 @@ class CalculatorFeature {
         isNewNumber = true
 
         state.updateState(
-            newResult = if (answer != 0.0) formatNumber(answer) else "0",
+            newResult = if (answer != BigDecimal.ZERO) formatNumber(answer) else "0",
             newFormula = formula.toString()
         )
         return state
@@ -173,7 +188,7 @@ class CalculatorFeature {
 
         try {
             val fullFormula = StringBuilder(formula)
-            fullFormula.append(currentNumber.ifEmpty { 0 })
+            fullFormula.append(currentNumber.ifEmpty { "0" })
 
             answer = calculateFormula(fullFormula)
             val formatAnswer = formatNumber(answer)
@@ -197,13 +212,13 @@ class CalculatorFeature {
     fun clear(): CalculatorState {
         formula.clear()
         currentNumber.clear()
-        answer = 0.0
+        answer = BigDecimal.ZERO
         isNewNumber = true
         state.clear()
         return state
     }
 
-    fun getAnswer(): Double = answer
+    fun getAnswer(): Double = answer.toDouble()
 
     private fun buildDisplayFormula(): String {
         return when {
@@ -214,75 +229,59 @@ class CalculatorFeature {
         }
     }
 
-    private fun formatNumber(number: Double): String {
-        return when {
-            number % 1.0 == 0.0 -> {
-                number.toLong().toString()
-            }
-
-            else -> {
-                java.math.BigDecimal(number)
-                    .setScale(10, java.math.RoundingMode.HALF_UP)
-                    .stripTrailingZeros()
-                    .toPlainString()
-            }
-        }
+    private fun formatNumber(number: BigDecimal): String {
+        return number.setScale(10, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString()
     }
 
-    private fun calculateFormula(formula: StringBuilder): Double {
+    private fun calculateFormula(formula: StringBuilder): BigDecimal {
         try {
-            val numbers = mutableListOf<Double>()
+            val numbers = mutableListOf<BigDecimal>()
             val operators = mutableListOf<Char>()
             var currentNumber = StringBuilder()
 
+            if (formula.isNotEmpty() && formula[0] == '-') {
+                currentNumber.append('-')
+                formula.deleteCharAt(0)
+            }
+
             formula.forEachIndexed { index, char ->
                 when {
-                    char.isDigit() || char == '.' ||
-                            (char == '-' && (index == 0 || formula[index - 1] in setOf(
-                                '+',
-                                '-',
-                                '*',
-                                '/'
-                            ))) -> {
+                    char.isDigit() || char == '.' -> {
                         currentNumber.append(char)
                     }
-
                     char in setOf('+', '-', '*', '/') -> {
                         if (currentNumber.isNotEmpty()) {
-                            numbers.add(currentNumber.toString().toDouble())
+                            numbers.add(BigDecimal(currentNumber.toString()))
                             currentNumber.clear()
                         }
-                        if (char != '-' || (index > 0 && formula[index - 1] !in setOf(
-                                '+',
-                                '-',
-                                '*',
-                                '/'
-                            ))
-                        ) {
+                        if (char == '-' && (index == 0 || formula[index - 1] in setOf('+', '-', '*', '/'))) {
+                            currentNumber.append('-')
+                        } else {
                             operators.add(char)
                         }
                     }
                 }
             }
 
-            if (currentNumber.isEmpty()) {
-                currentNumber = StringBuilder("0")
-                this.currentNumber = currentNumber
+            if (currentNumber.isNotEmpty()) {
+                numbers.add(BigDecimal(currentNumber.toString()))
             }
-            numbers.add(currentNumber.toString().toDouble())
+
+            if (numbers.isEmpty()) {
+                return BigDecimal.ZERO
+            }
 
             var i = 0
             while (i < operators.size) {
                 if (operators[i] in setOf('*', '/')) {
                     val result = when (operators[i]) {
-                        '*' -> numbers[i] * numbers[i + 1]
+                        '*' -> numbers[i].multiply(numbers[i + 1])
                         '/' -> {
-                            if (numbers[i + 1] == 0.0) throw ArithmeticException("除數不能為零")
-                            val num1 = java.math.BigDecimal(numbers[i].toString())
-                            val num2 = java.math.BigDecimal(numbers[i + 1].toString())
-                            num1.divide(num2, 10, java.math.RoundingMode.HALF_UP).toDouble()
+                            if (numbers[i + 1].compareTo(BigDecimal.ZERO) == 0) {
+                                throw ArithmeticException("除數不能為零")
+                            }
+                            numbers[i].divide(numbers[i + 1], 10, RoundingMode.HALF_UP)
                         }
-
                         else -> throw IllegalStateException("未知運算符")
                     }
 
@@ -297,19 +296,19 @@ class CalculatorFeature {
             var result = numbers[0]
             for (i in operators.indices) {
                 result = when (operators[i]) {
-                    '+' -> result + numbers[i + 1]
-                    '-' -> result - numbers[i + 1]
+                    '+' -> result.add(numbers[i + 1])
+                    '-' -> result.subtract(numbers[i + 1])
                     else -> throw IllegalStateException("未知運算符")
                 }
             }
 
-            return result
+            return result.stripTrailingZeros()
 
         } catch (e: Exception) {
             when (e) {
                 is NumberFormatException -> throw IllegalArgumentException("無效的數字格式")
                 is ArithmeticException -> throw e
-                else -> throw IllegalStateException("計算錯誤")
+                else -> throw IllegalStateException("計算錯誤: ${e.message}")
             }
         }
     }
