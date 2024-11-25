@@ -9,6 +9,11 @@
         <item name="android:backgroundTint">@color/calculator_button_background_number</item>
         <item name="android:textColor">@color/calculator_button_text_color</item>
         <item name="layout_constraintVertical_weight">0.15</item>
+        <item name="android:autoSizeMaxTextSize">18sp</item>
+        <item name="android:autoSizeMinTextSize">6sp</item>
+        <item name="android:autoSizeStepGranularity">1sp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="CalculatorDisplay">
