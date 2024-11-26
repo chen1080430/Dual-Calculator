@@ -17,11 +17,20 @@ class ResizableLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    interface ResizeCallback {
+        fun onDragStarted()
+        fun onDragEnded()
+        fun onLayoutClicked()
+    }
+
+    var resizeCallback: ResizeCallback? = null
+
     private var dragHelper: ViewDragHelper
     private var currentRatio = 0.46f
     private val minRatio = 0.2f
     private val maxRatio = 0.8f
     private var screenWidth = 0
+    // TODO fix initial value
     private var lastLeft = 0
     private var switchWeight = 8
     private lateinit var calculator1: View
@@ -34,6 +43,9 @@ class ResizableLayout @JvmOverloads constructor(
 
     init {
         dragHelper = ViewDragHelper.create(this, DragCallback())
+        setOnClickListener {
+            resizeCallback?.onLayoutClicked()
+        }
     }
 
     override fun onFinishInflate() {
@@ -97,7 +109,14 @@ class ResizableLayout @JvmOverloads constructor(
             }
         }
 
+        override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
+            super.onViewCaptured(capturedChild, activePointerId)
+            resizeCallback?.onDragStarted()
+        }
+
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
+            super.onViewReleased(releasedChild, xvel, yvel)
+            resizeCallback?.onDragEnded()
             updateCalculatorsSize()
         }
 

@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.mason.resizecalculator.databinding.FragmentCalculatorBinding
+import com.mason.resizecalculator.R
 import com.mason.resizecalculator.databinding.CalculatorLayoutBinding
 import com.mason.resizecalculator.databinding.CalculatorSwitchLayoutBinding
+import com.mason.resizecalculator.databinding.FragmentCalculatorBinding
+import com.tomergoldst.tooltips.ToolTip
+import com.tomergoldst.tooltips.ToolTipsManager
 
-class CalculatorFragment : Fragment() {
+class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
     private var _binding: FragmentCalculatorBinding? = null
 
     private val calculatorBinding: CalculatorLayoutBinding
@@ -26,6 +29,8 @@ class CalculatorFragment : Fragment() {
 
     private val viewModel: CalculatorViewModel by viewModels()
     private var screenOrientation = Configuration.ORIENTATION_UNDEFINED
+
+    private var tooltipsManager: ToolTipsManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,13 +52,47 @@ class CalculatorFragment : Fragment() {
             setupCalculator(calculatorBinding2, viewModel, Configuration.ORIENTATION_LANDSCAPE)
             setupCalculatorSwitchLayout(calculatorSwitchLayoutBinding, viewModel)
             screenOrientation = Configuration.ORIENTATION_LANDSCAPE
+
+            (_binding?.root as? ResizableLayout)?.resizeCallback = this
+
+            view.post {
+                popupResize()
+            }
         }
-        popupResize()
     }
 
     private fun popupResize() {
-        Log.d(Companion.TAG, "popupResize: ")
-        // TODO: Implement the resize dialog
+        calculatorSwitchLayoutBinding?.btnResize?.let { btnResize ->
+            _binding?.root?.let { rootView ->
+                tooltipsManager = ToolTipsManager()
+                val builder = ToolTip.Builder(
+                    requireContext(),
+                    btnResize,
+                    rootView as ViewGroup,
+                    resources.getString(R.string.drag_to_resize),
+                    ToolTip.POSITION_ABOVE
+                )
+
+//                builder.setAlign(ToolTip.ALIGN_CENTER)
+                builder.setBackgroundColor(
+                    resources.getColor(
+                        android.R.color.holo_green_light,
+                        null
+                    )
+                )
+                val view = tooltipsManager?.show(builder.build())
+                // constraintSet need every child view have their own id
+                view?.id = getString(R.string.resize_tooltip).hashCode()
+            }
+        } ?: run {
+            Log.e(Companion.TAG, "popupResize: btnResize or rootView is null")
+        }
+    }
+
+    private fun dismissPopup() {
+        tooltipsManager?.run {
+            findAndDismiss(calculatorSwitchLayoutBinding?.btnResize)
+        }
     }
 
     private fun setupCalculatorSwitchLayout(
@@ -63,6 +102,7 @@ class CalculatorFragment : Fragment() {
         calculatorSwitchLayoutBinding?.apply {
             buttonToLeft.setOnClickListener { viewModel.onMoveToLeftClick() }
             buttonToRight.setOnClickListener { viewModel.onMoveToRightClick() }
+            btnResize.setOnClickListener { dismissPopup() }
         }
     }
 
@@ -112,10 +152,24 @@ class CalculatorFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(Companion.TAG, "onDestroyView: ")
+        (_binding?.root as? ResizableLayout)?.resizeCallback = null
+        dismissPopup()
         _binding = null
     }
 
     companion object {
         private const val TAG = "CalculatorFragment"
+    }
+
+    override fun onDragStarted() {
+        dismissPopup()
+    }
+
+    override fun onDragEnded() {
+    }
+
+    override fun onLayoutClicked() {
+        // TODO
+        dismissPopup()
     }
 } 
