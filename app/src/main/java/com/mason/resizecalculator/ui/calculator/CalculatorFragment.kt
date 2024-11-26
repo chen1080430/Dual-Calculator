@@ -48,6 +48,12 @@ class CalculatorFragment : Fragment() {
             setupCalculatorSwitchLayout(calculatorSwitchLayoutBinding, viewModel)
             screenOrientation = Configuration.ORIENTATION_LANDSCAPE
         }
+        popupResize()
+    }
+
+    private fun popupResize() {
+        Log.d(Companion.TAG, "popupResize: ")
+        // TODO: Implement the resize dialog
     }
 
     private fun setupCalculatorSwitchLayout(
@@ -55,42 +61,16 @@ class CalculatorFragment : Fragment() {
         viewModel: CalculatorViewModel
     ) {
         calculatorSwitchLayoutBinding?.apply {
-            buttonToLeft.setOnClickListener { viewModel.onMoveToLeftClick()}
-            buttonToRight.setOnClickListener { viewModel.onMoveToRightClick()}
-            btnResize.setOnClickListener{ viewModel.onResizeClick()}
+            buttonToLeft.setOnClickListener { viewModel.onMoveToLeftClick() }
+            buttonToRight.setOnClickListener { viewModel.onMoveToRightClick() }
         }
     }
-
-    /*
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        Log.e(Companion.TAG, "#onConfigurationChanged: ")
-
-        // 清理當前的 binding
-        _binding = null
-
-        // 重新載入佈局
-        val inflater = LayoutInflater.from(context)
-        val container = view?.parent as? ViewGroup
-
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            _binding = FragmentCalculatorBinding.inflate(inflater, container, false)
-            setupCalculator(_binding?.calculator1, viewModel)
-        } else {
-//            _bindingLand = FragmentCalculatorLandBinding.inflate(inflater, container, false)
-            setupCalculator(_binding?.calculator1, viewModel)
-            setupCalculator(_binding?.calculator2, viewModel, 2)
-        }
-
-    }
-     */
 
     private fun setupCalculator(
         binding: CalculatorLayoutBinding?,
         viewModel: CalculatorViewModel,
         displayScreen: Int = 1
     ) {
-        // 計算器 ID 輔助函數
         val calculatorId = if (displayScreen == 1) 1 else 2
 
         binding?.apply {
@@ -133,9 +113,6 @@ class CalculatorFragment : Fragment() {
         super.onDestroyView()
         Log.d(Companion.TAG, "onDestroyView: ")
         _binding = null
-    }
-
-    fun updateCalculatorView() {
     }
 
     companion object {

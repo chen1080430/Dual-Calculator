@@ -5,5 +5,6 @@
 
     <color name="calculator_button_text_color">@color/white</color>
     <color name="calculator_button_background_number">#E9525252</color>
-
+    <color name="divider_edge_line_color">#FF00AAAA</color>
+    <color name="divider_line_color">#FFFFFF</color>
 </resources>

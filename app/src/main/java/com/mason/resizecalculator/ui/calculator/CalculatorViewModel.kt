@@ -122,8 +122,4 @@ class CalculatorViewModel : ViewModel() {
         calculator2.inputCompleteNumber(calculator1.getAnswer())
         updateDisplay(2, calculator2.inputCompleteNumber(calculator1.getAnswer()))
     }
-
-    fun onResizeClick() {
-        TODO("Not yet implemented")
-    }
 }

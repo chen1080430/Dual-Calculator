@@ -15,5 +15,7 @@
 
     <color name="calculator_button_text_color">@color/white</color>
     <color name="calculator_button_background_number">#E92A2A2A</color>
+    <color name="divider_edge_line_color">#33000000</color>
+    <color name="divider_line_color">#66000000</color>
 
 </resources>

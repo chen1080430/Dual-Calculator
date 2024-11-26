@@ -23,4 +23,7 @@
     <string name="image_view_item_transform_content_description">Represents an image view in the
         item
     </string>
+    <string name="drag_to_resize">Drag to resize</string>
+    <string name="copy_to_right">Copy left number to right</string>
+    <string name="copy_to_left">Copy right number to left</string>
 </resources>

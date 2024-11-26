@@ -2,8 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="4dp">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineButton1"
@@ -24,41 +23,66 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.65" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_to_left"
         style="@style/CalculatorButton_Switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableStart="@android:drawable/arrow_up_float"
-        android:text="L"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/copy_to_left"
+        android:src="@drawable/arrow_left"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guidelineButton1"
-        app:layout_constraintWidth_min="20dp" />
+        app:layout_constraintWidth_min="20dp"
+        app:layout_constraintWidth_percent="1" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_to_right"
         style="@style/CalculatorButton_Switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableStart="@android:drawable/arrow_down_float"
-        android:text="R"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/copy_to_right"
+        android:src="@drawable/arrow_right"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guidelineButton2"
-        app:layout_constraintWidth_min="20dp" />
+        app:layout_constraintWidth_min="20dp"
+        app:layout_constraintWidth_percent="1" />
 
-    <Button
-        android:id="@+id/btnResize"
+    <ImageButton
+        android:id="@+id/btn_resize"
         style="@style/CalculatorButton_Switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MO"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:clickable="true"
+        android:contentDescription="@string/drag_to_resize"
+        android:focusable="true"
+        android:src="@drawable/arrow_resize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="30dp"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton3"
+        app:layout_constraintWidth_min="10dp"
+        app:layout_constraintWidth_percent="0.8"
+        app:tint="@color/calculator_button_text_color" />
+
+    <View
+        android:id="@+id/divider_resize"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/drag_handle_background"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineButton3" />
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintWidth_min="4dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
