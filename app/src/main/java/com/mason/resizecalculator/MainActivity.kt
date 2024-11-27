@@ -3,7 +3,6 @@ package com.mason.resizecalculator
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -15,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mason.resizecalculator.databinding.ActivityMainBinding
 import android.content.res.Configuration
 import android.view.View
-import android.view.WindowManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,12 +26,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
-
-//        binding.appBarMain.fab?.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null)
-//                .setAnchorView(R.id.fab).show()
-//        }
 
         val navHostFragment =
             (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment?)!!
@@ -64,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         updateNavigationVisibility()
     }
 
-    // 添加這個方法來處理方向變化
     private fun updateNavigationVisibility() {
         supportActionBar?.apply {
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -73,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 show()
             }
         }
+        binding.appBarMain.contentMain.bottomNavView?.visibility = View.GONE
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

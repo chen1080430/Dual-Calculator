@@ -6,8 +6,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import android.view.MotionEvent
 import android.view.View
 import android.annotation.SuppressLint
+import android.graphics.Rect
+import android.util.Log
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
 import com.mason.resizecalculator.R
 
@@ -30,16 +31,16 @@ class ResizableLayout @JvmOverloads constructor(
     private val minRatio = 0.2f
     private val maxRatio = 0.8f
     private var screenWidth = 0
-    // TODO fix initial value
-    private var lastLeft = 0
+    private var lastDragPositionX = 0
     private var switchWeight = 8
+    private var initialTouchX = 0f
+    private var initialTouchY = 0f
     private lateinit var calculator1: View
     private lateinit var calculator2: View
     private lateinit var divider: View
     private lateinit var btnLeft: View
     private lateinit var btnRight: View
     private lateinit var btnResize: View
-
 
     init {
         dragHelper = ViewDragHelper.create(this, DragCallback())
@@ -58,12 +59,31 @@ class ResizableLayout @JvmOverloads constructor(
         btnResize = findViewById(R.id.btn_resize)
     }
 
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        if (changed && this::btnResize.isInitialized) {
+            val btnLocationXY = intArrayOf(0, 0)
+            val layoutLocationXY = intArrayOf(0, 0)
+            btnResize.getLocationOnScreen(btnLocationXY)
+            getLocationOnScreen(layoutLocationXY)
+            lastDragPositionX = btnLocationXY[0] - layoutLocationXY[0] + btnResize.width / 2
+        }
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         screenWidth = w
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        val locationXY = intArrayOf(0, 0)
+        this.getLocationOnScreen(locationXY)
+        when (ev.action) {
+            MotionEvent.ACTION_DOWN -> {
+                initialTouchX = ev.x + locationXY[0]
+                initialTouchY = ev.y + locationXY[1]
+            }
+        }
         return dragHelper.shouldInterceptTouchEvent(ev)
     }
 
@@ -73,16 +93,20 @@ class ResizableLayout @JvmOverloads constructor(
         return true
     }
 
-    override fun computeScroll() {
-        if (dragHelper.continueSettling(true)) {
-            ViewCompat.postInvalidateOnAnimation(this)
-        }
-    }
-
     private inner class DragCallback : ViewDragHelper.Callback() {
 
         override fun tryCaptureView(child: View, pointerId: Int): Boolean {
-            return child.id == R.id.calculator_switch_layout
+            if (child.id == R.id.calculator_switch_layout) {
+                val rect = Rect()
+                btnResize.getGlobalVisibleRect(rect)
+
+                val isInResizeButton = rect.contains(
+                    initialTouchX.toInt(),
+                    initialTouchY.toInt()
+                )
+                return isInResizeButton
+            }
+            return false
         }
 
         override fun onViewDragStateChanged(state: Int) {
@@ -104,8 +128,8 @@ class ResizableLayout @JvmOverloads constructor(
             dy: Int
         ) {
             var centerX = changedView.width / 2 + left
-            if (centerX != lastLeft) {
-                lastLeft = centerX
+            if (centerX != lastDragPositionX) {
+                lastDragPositionX = centerX
             }
         }
 
@@ -135,7 +159,7 @@ class ResizableLayout @JvmOverloads constructor(
     private fun updateCalculatorsSize() {
         val constraintSet = ConstraintSet()
         constraintSet.clone(this)
-        currentRatio = lastLeft.toFloat() / screenWidth
+        currentRatio = lastDragPositionX.toFloat() / screenWidth
 
         val calculatorWeight = 100 - switchWeight
         val leftWeight = (currentRatio * calculatorWeight).toInt()
@@ -146,5 +170,9 @@ class ResizableLayout @JvmOverloads constructor(
         constraintSet.setHorizontalWeight(R.id.calculator2, rightWeight.toFloat())
 
         constraintSet.applyTo(this)
+    }
+
+    companion object {
+        private const val TAG = "ResizableLayout"
     }
 }
