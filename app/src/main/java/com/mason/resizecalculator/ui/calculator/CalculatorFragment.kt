@@ -37,14 +37,12 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d(Companion.TAG, "#onCreateView: ")
         _binding = FragmentCalculatorBinding.inflate(inflater, container, false)
         return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(Companion.TAG, "#onViewCreated: ")
 
         setupCalculator(calculatorBinding, viewModel)
         screenOrientation = Configuration.ORIENTATION_PORTRAIT
@@ -73,7 +71,6 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
                     ToolTip.POSITION_ABOVE
                 )
 
-//                builder.setAlign(ToolTip.ALIGN_CENTER)
                 builder.setBackgroundColor(
                     resources.getColor(
                         android.R.color.holo_green_light,
@@ -85,7 +82,7 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
                 view?.id = getString(R.string.resize_tooltip).hashCode()
             }
         } ?: run {
-            Log.e(Companion.TAG, "popupResize: btnResize or rootView is null")
+            Log.e(TAG, "popupResize: btnResize or rootView is null")
         }
     }
 
@@ -151,14 +148,9 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(Companion.TAG, "onDestroyView: ")
         (_binding?.root as? ResizableLayout)?.resizeCallback = null
         dismissPopup()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "CalculatorFragment"
     }
 
     override fun onDragStarted() {
@@ -169,7 +161,10 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
     }
 
     override fun onLayoutClicked() {
-        // TODO
         dismissPopup()
     }
-} 
+
+    companion object {
+        private const val TAG = "CalculatorFragment"
+    }
+}

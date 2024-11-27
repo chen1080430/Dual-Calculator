@@ -44,9 +44,6 @@ class ResizableLayout @JvmOverloads constructor(
 
     init {
         dragHelper = ViewDragHelper.create(this, DragCallback())
-        setOnClickListener {
-            resizeCallback?.onLayoutClicked()
-        }
     }
 
     override fun onFinishInflate() {
@@ -82,6 +79,7 @@ class ResizableLayout @JvmOverloads constructor(
             MotionEvent.ACTION_DOWN -> {
                 initialTouchX = ev.x + locationXY[0]
                 initialTouchY = ev.y + locationXY[1]
+                resizeCallback?.onLayoutClicked()
             }
         }
         return dragHelper.shouldInterceptTouchEvent(ev)
