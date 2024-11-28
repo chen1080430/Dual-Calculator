@@ -31,26 +31,27 @@ class MainActivity : AppCompatActivity() {
             (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment?)!!
         val navController = navHostFragment.navController
 
-        binding.navView?.let {
-            appBarConfiguration = AppBarConfiguration(
-                setOf(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings, R.id.nav_calculator
-                ),
-                binding.drawerLayout
-            )
-            setupActionBarWithNavController(navController, appBarConfiguration)
-            it.setupWithNavController(navController)
-        }
+//        binding.navView?.let {
+//            appBarConfiguration = AppBarConfiguration(
+//                setOf(
+//                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_settings, R.id.nav_calculator
+//                ),
+//                binding.drawerLayout
+//            )
+//            setupActionBarWithNavController(navController, appBarConfiguration)
+//            it.setupWithNavController(navController)
+//            it.visibility = View.GONE
+//        }
 
-        binding.appBarMain.contentMain.bottomNavView?.let {
-            appBarConfiguration = AppBarConfiguration(
-                setOf(
-                    R.id.nav_calculator, R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow
-                )
-            )
-            setupActionBarWithNavController(navController, appBarConfiguration)
-            it.setupWithNavController(navController)
-        }
+//        binding.appBarMain.contentMain.bottomNavView?.let {
+//            appBarConfiguration = AppBarConfiguration(
+//                setOf(
+//                    R.id.nav_calculator, R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow
+//                )
+//            )
+//            setupActionBarWithNavController(navController, appBarConfiguration)
+//            it.setupWithNavController(navController)
+//        }
 
         updateNavigationVisibility()
     }
@@ -71,18 +72,18 @@ class MainActivity : AppCompatActivity() {
         updateNavigationVisibility()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val result = super.onCreateOptionsMenu(menu)
-        // Using findViewById because NavigationView exists in different layout files
-        // between w600dp and w1240dp
-        val navView: NavigationView? = findViewById(R.id.nav_view)
-        if (navView == null) {
-            // The navigation drawer already has the items including the items in the overflow menu
-            // We only inflate the overflow menu if the navigation drawer isn't visible
-            menuInflater.inflate(R.menu.overflow, menu)
-        }
-        return result
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        val result = super.onCreateOptionsMenu(menu)
+//        // Using findViewById because NavigationView exists in different layout files
+//        // between w600dp and w1240dp
+//        val navView: NavigationView? = findViewById(R.id.nav_view)
+//        if (navView == null) {
+//            // The navigation drawer already has the items including the items in the overflow menu
+//            // We only inflate the overflow menu if the navigation drawer isn't visible
+//            menuInflater.inflate(R.menu.overflow, menu)
+//        }
+//        return result
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

@@ -1,17 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/calculator_layout_padding_horizontal">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/guidelineButton1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineButton2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineButton3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineButton4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.68" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineButton5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.84" />
 
     <TextView
         android:id="@+id/display"
@@ -46,7 +73,7 @@
         android:maxLines="1"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/guidelineButton"
+        app:layout_constraintBottom_toTopOf="@id/guidelineButton1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,184 +84,204 @@
         android:id="@+id/btnClear"
         style="@style/CalculatorButton_Function"
         android:text="AC"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton2"
         app:layout_constraintEnd_toStartOf="@id/btnSign"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineButton" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton1" />
 
     <Button
         android:id="@+id/btnSign"
         style="@style/CalculatorButton_Function"
         android:text="+/-"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton2"
         app:layout_constraintEnd_toStartOf="@id/btnPercent"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btnClear"
-        app:layout_constraintTop_toBottomOf="@id/guidelineButton" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton1" />
 
     <Button
         android:id="@+id/btnPercent"
         style="@style/CalculatorButton_Function"
         android:text="%"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton2"
         app:layout_constraintEnd_toStartOf="@id/btnDivide"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btnSign"
-        app:layout_constraintTop_toBottomOf="@id/guidelineButton" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton1" />
 
     <Button
         android:id="@+id/btnDivide"
         style="@style/CalculatorButton_Function2"
         android:text="/"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btnPercent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineButton" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton1" />
 
     <!-- Second Row -->
     <Button
         android:id="@+id/btn7"
         style="@style/CalculatorButton"
         android:text="7"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton3"
         app:layout_constraintEnd_toStartOf="@id/btn8"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnClear" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton2" />
 
     <Button
         android:id="@+id/btn8"
         style="@style/CalculatorButton"
         android:text="8"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton3"
         app:layout_constraintEnd_toStartOf="@id/btn9"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn7"
-        app:layout_constraintTop_toBottomOf="@id/btnSign" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton2" />
 
     <Button
         android:id="@+id/btn9"
         style="@style/CalculatorButton"
         android:text="9"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton3"
         app:layout_constraintEnd_toStartOf="@id/btnMultiply"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn8"
-        app:layout_constraintTop_toBottomOf="@id/btnPercent" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton2" />
 
     <Button
         android:id="@+id/btnMultiply"
         style="@style/CalculatorButton_Function2"
         android:text="×"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn9"
-        app:layout_constraintTop_toBottomOf="@id/btnDivide" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton2" />
 
     <!-- Third Row -->
     <Button
         android:id="@+id/btn4"
         style="@style/CalculatorButton"
         android:text="4"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton4"
         app:layout_constraintEnd_toStartOf="@id/btn5"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn7" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton3" />
 
     <Button
         android:id="@+id/btn5"
         style="@style/CalculatorButton"
         android:text="5"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton4"
         app:layout_constraintEnd_toStartOf="@id/btn6"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn4"
-        app:layout_constraintTop_toBottomOf="@id/btn8" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton3" />
 
     <Button
         android:id="@+id/btn6"
         style="@style/CalculatorButton"
         android:text="6"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton4"
         app:layout_constraintEnd_toStartOf="@id/btnMinus"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn5"
-        app:layout_constraintTop_toBottomOf="@id/btn9" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton3" />
 
     <Button
         android:id="@+id/btnMinus"
         style="@style/CalculatorButton_Function2"
         android:text="-"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn6"
-        app:layout_constraintTop_toBottomOf="@id/btnMultiply" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton3" />
 
     <!-- Fourth Row -->
     <Button
         android:id="@+id/btn1"
         style="@style/CalculatorButton"
         android:text="1"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton5"
         app:layout_constraintEnd_toStartOf="@id/btn2"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn4" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton4" />
 
     <Button
         android:id="@+id/btn2"
         style="@style/CalculatorButton"
         android:text="2"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton5"
         app:layout_constraintEnd_toStartOf="@id/btn3"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn1"
-        app:layout_constraintTop_toBottomOf="@id/btn5" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton4" />
 
     <Button
         android:id="@+id/btn3"
         style="@style/CalculatorButton"
         android:text="3"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton5"
         app:layout_constraintEnd_toStartOf="@id/btnPlus"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn2"
-        app:layout_constraintTop_toBottomOf="@id/btn6" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton4" />
 
     <Button
         android:id="@+id/btnPlus"
         style="@style/CalculatorButton_Function2"
         android:text="+"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButton5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn3"
-        app:layout_constraintTop_toBottomOf="@id/btnMinus" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton4" />
 
     <!-- Fifth Row -->
     <Button
         android:id="@+id/btn0"
         style="@style/CalculatorButton"
         android:text="0"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnDot"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn1" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton5" />
 
     <Button
         android:id="@+id/btnDot"
         style="@style/CalculatorButton"
         android:text="."
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnDelete"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btn0"
-        app:layout_constraintTop_toBottomOf="@id/btn2" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton5" />
 
     <Button
         android:id="@+id/btnDelete"
         style="@style/CalculatorButton"
         android:text="Del"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnEquals"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btnDot"
-        app:layout_constraintTop_toBottomOf="@id/btn3" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton5" />
 
     <Button
         android:id="@+id/btnEquals"
         style="@style/CalculatorButton_Function2"
         android:text="="
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.25"
         app:layout_constraintStart_toEndOf="@id/btnDelete"
-        app:layout_constraintTop_toBottomOf="@id/btnPlus" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineButton5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
