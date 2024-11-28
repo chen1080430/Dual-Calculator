@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mason.resizecalculator.databinding.ActivityMainBinding
 import android.content.res.Configuration
 import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
 
 class MainActivity : AppCompatActivity() {
 
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.appBarMain.contentMain.bottomNavView?.visibility = View.GONE
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
