@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.annotation.SuppressLint
 import android.graphics.Rect
-import android.util.Log
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.customview.widget.ViewDragHelper
 import com.mason.resizecalculator.R
@@ -48,8 +47,8 @@ class ResizableLayout @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        calculator1 = findViewById(R.id.calculator1)
-        calculator2 = findViewById(R.id.calculator2)
+        calculator1 = findViewById(R.id.calculator_left)
+        calculator2 = findViewById(R.id.calculator_right)
         divider = findViewById(R.id.divider_resize)
         btnLeft = findViewById(R.id.button_to_left)
         btnRight = findViewById(R.id.button_to_right)
@@ -163,9 +162,9 @@ class ResizableLayout @JvmOverloads constructor(
         val leftWeight = (currentRatio * calculatorWeight).toInt()
         val rightWeight = ((1 - currentRatio) * calculatorWeight).toInt()
 
-        constraintSet.setHorizontalWeight(R.id.calculator1, leftWeight.toFloat())
+        constraintSet.setHorizontalWeight(R.id.calculator_left, leftWeight.toFloat())
         constraintSet.setHorizontalWeight(R.id.calculator_switch_layout, switchWeight.toFloat())
-        constraintSet.setHorizontalWeight(R.id.calculator2, rightWeight.toFloat())
+        constraintSet.setHorizontalWeight(R.id.calculator_right, rightWeight.toFloat())
 
         constraintSet.applyTo(this)
     }

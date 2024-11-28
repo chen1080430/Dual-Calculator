@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <include
-        android:id="@+id/calculator1"
+        android:id="@+id/calculator_left"
         layout="@layout/calculator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

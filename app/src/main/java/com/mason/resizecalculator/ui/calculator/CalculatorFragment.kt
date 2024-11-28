@@ -18,11 +18,11 @@ import com.tomergoldst.tooltips.ToolTipsManager
 class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
     private var _binding: FragmentCalculatorBinding? = null
 
-    private val calculatorBinding: CalculatorLayoutBinding
-        get() = _binding!!.calculator1
+    private val calculatorBindingLeft: CalculatorLayoutBinding
+        get() = _binding!!.calculatorLeft
 
-    private val calculatorBinding2: CalculatorLayoutBinding?
-        get() = _binding!!.calculator2
+    private val calculatorBindingRight: CalculatorLayoutBinding?
+        get() = _binding!!.calculatorRight
 
     private val calculatorSwitchLayoutBinding: CalculatorSwitchLayoutBinding?
         get() = _binding!!.calculatorSwitchLayout
@@ -44,13 +44,12 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupCalculator(calculatorBinding, viewModel)
+        setupCalculator(calculatorBindingLeft, viewModel)
         screenOrientation = Configuration.ORIENTATION_PORTRAIT
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setupCalculator(calculatorBinding2, viewModel, Configuration.ORIENTATION_LANDSCAPE)
+            setupCalculator(calculatorBindingRight, viewModel, CalculatorId.RIGHT)
             setupCalculatorSwitchLayout(calculatorSwitchLayoutBinding, viewModel)
             screenOrientation = Configuration.ORIENTATION_LANDSCAPE
-
             (_binding?.root as? ResizableLayout)?.resizeCallback = this
 
             view.post {
@@ -106,9 +105,8 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
     private fun setupCalculator(
         binding: CalculatorLayoutBinding?,
         viewModel: CalculatorViewModel,
-        displayScreen: Int = 1
+        calculatorId: CalculatorId = CalculatorId.LEFT
     ) {
-        val calculatorId = if (displayScreen == 1) 1 else 2
 
         binding?.apply {
             btn0.setOnClickListener { viewModel.onNumberClick(0, calculatorId) }
@@ -134,12 +132,14 @@ class CalculatorFragment : Fragment(), ResizableLayout.ResizeCallback {
             btnEquals.setOnClickListener { viewModel.onEqualsClick(calculatorId) }
             btnClear.setOnClickListener { viewModel.onClearClick(calculatorId) }
 
-            if (displayScreen == 1) {
-                viewModel.displayResult1.observe(viewLifecycleOwner) { display.text = it }
-                viewModel.displayFormula1.observe(viewLifecycleOwner) { displayFormula.text = it }
+            if (calculatorId == CalculatorId.LEFT) {
+                viewModel.displayResultLeft.observe(viewLifecycleOwner) { display.text = it }
+                viewModel.displayFormulaLeft.observe(viewLifecycleOwner) {
+                    displayFormula.text = it
+                }
             } else {
-                viewModel.displayResult2.observe(viewLifecycleOwner) { display.text = it }
-                viewModel.displayFormula2.observe(viewLifecycleOwner) {
+                viewModel.displayResultRight.observe(viewLifecycleOwner) { display.text = it }
+                viewModel.displayFormulaRight.observe(viewLifecycleOwner) {
                     displayFormula.text = it
                 }
             }

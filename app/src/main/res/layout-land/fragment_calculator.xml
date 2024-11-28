@@ -6,7 +6,7 @@
     android:padding="4dp">
 
     <include
-        android:id="@+id/calculator1"
+        android:id="@+id/calculator_left"
         layout="@layout/calculator_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        android:id="@+id/calculator2"
+        android:id="@+id/calculator_right"
         layout="@layout/calculator_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -33,9 +33,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/calculator2"
+        app:layout_constraintEnd_toStartOf="@id/calculator_right"
         app:layout_constraintHorizontal_weight="8"
-        app:layout_constraintStart_toEndOf="@id/calculator1"
+        app:layout_constraintStart_toEndOf="@id/calculator_left"
         app:layout_constraintTop_toTopOf="parent" />
 
 </com.mason.resizecalculator.ui.calculator.ResizableLayout>

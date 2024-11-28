@@ -5,121 +5,124 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CalculatorViewModel : ViewModel() {
-    private val calculator1 = CalculatorFeature()
-    private val calculator2 = CalculatorFeature()
 
-    private val _displayResult1 = MutableLiveData<String>()
-    val displayResult1: LiveData<String> = _displayResult1
+    private val leftCalculator = CalculatorFunction()
+    private val rightCalculator = CalculatorFunction()
 
-    private val _displayFormula1 = MutableLiveData<String>()
-    val displayFormula1: LiveData<String> = _displayFormula1
+    private val _displayResultLeft = MutableLiveData<String>()
+    val displayResultLeft: LiveData<String> = _displayResultLeft
 
-    private val _displayResult2 = MutableLiveData<String>()
-    val displayResult2: LiveData<String> = _displayResult2
+    private val _displayFormulaLeft = MutableLiveData<String>()
+    val displayFormulaLeft: LiveData<String> = _displayFormulaLeft
 
-    private val _displayFormula2 = MutableLiveData<String>()
-    val displayFormula2: LiveData<String> = _displayFormula2
+    private val _displayResultRight = MutableLiveData<String>()
+    val displayResultRight: LiveData<String> = _displayResultRight
+
+    private val _displayFormulaRight = MutableLiveData<String>()
+    val displayFormulaRight: LiveData<String> = _displayFormulaRight
 
     init {
-        _displayResult1.value = "0"
-        _displayResult2.value = "0"
-        _displayFormula1.value = ""
-        _displayFormula2.value = ""
+        _displayResultLeft.value = "0"
+        _displayResultRight.value = "0"
+        _displayFormulaLeft.value = ""
+        _displayFormulaRight.value = ""
     }
 
-    fun onNumberClick(number: Int, calculatorId: Int) {
+    fun onNumberClick(number: Int, calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.inputNumber(number)
-            2 -> calculator2.inputNumber(number)
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.inputNumber(number)
+            CalculatorId.RIGHT -> rightCalculator.inputNumber(number)
         }
         updateDisplay(calculatorId, state)
     }
 
-    fun onOperationClick(op: String, calculatorId: Int) {
+    fun onOperationClick(op: String, calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.inputOperation(op)
-            2 -> calculator2.inputOperation(op)
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.inputOperation(op)
+            CalculatorId.RIGHT -> rightCalculator.inputOperation(op)
         }
         updateDisplay(calculatorId, state)
     }
 
-    fun onDecimalClick(calculatorId: Int) {
+    fun onDecimalClick(calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.inputDecimal()
-            2 -> calculator2.inputDecimal()
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.inputDecimal()
+            CalculatorId.RIGHT -> rightCalculator.inputDecimal()
         }
         updateDisplay(calculatorId, state)
     }
 
-    fun onSignClick(calculatorId: Int) {
+    fun onSignClick(calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.toggleSign()
-            2 -> calculator2.toggleSign()
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.toggleSign()
+            CalculatorId.RIGHT -> rightCalculator.toggleSign()
         }
         updateDisplay(calculatorId, state)
     }
 
-    fun onPercentClick(calculatorId: Int) {
+    fun onPercentClick(calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.calculatePercent()
-            2 -> calculator2.calculatePercent()
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.calculatePercent()
+            CalculatorId.RIGHT -> rightCalculator.calculatePercent()
         }
         updateDisplay(calculatorId, state)
     }
 
-    fun onDeleteClick(calculatorId: Int) {
+    fun onDeleteClick(calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.delete()
-            2 -> calculator2.delete()
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.delete()
+            CalculatorId.RIGHT -> rightCalculator.delete()
         }
         updateDisplay(calculatorId, state)
     }
 
-    fun onEqualsClick(calculatorId: Int) {
+    fun onEqualsClick(calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.calculate()
-            2 -> calculator2.calculate()
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.calculate()
+            CalculatorId.RIGHT -> rightCalculator.calculate()
         }
         updateDisplay(calculatorId, state)
     }
 
-    fun onClearClick(calculatorId: Int) {
+    fun onClearClick(calculatorId: CalculatorId) {
         val state = when (calculatorId) {
-            1 -> calculator1.clear()
-            2 -> calculator2.clear()
-            else -> return
+            CalculatorId.LEFT -> leftCalculator.clear()
+            CalculatorId.RIGHT -> rightCalculator.clear()
         }
         updateDisplay(calculatorId, state)
     }
 
-    private fun updateDisplay(calculatorId: Int, state: CalculatorState) {
+    private fun updateDisplay(calculatorId: CalculatorId, state: CalculatorState) {
         when (calculatorId) {
-            1 -> {
-                _displayResult1.value = state.result
-                _displayFormula1.value = state.formula
+            CalculatorId.LEFT -> {
+                _displayResultLeft.value = state.result
+                _displayFormulaLeft.value = state.formula
             }
 
-            2 -> {
-                _displayResult2.value = state.result
-                _displayFormula2.value = state.formula
+            CalculatorId.RIGHT -> {
+                _displayResultRight.value = state.result
+                _displayFormulaRight.value = state.formula
             }
         }
     }
 
     fun onMoveToLeftClick() {
-        updateDisplay(1, calculator1.inputCompleteNumber(calculator2.getAnswer()))
+        updateDisplay(
+            CalculatorId.LEFT,
+            leftCalculator.inputCompleteNumber(rightCalculator.getAnswer())
+        )
 
     }
 
     fun onMoveToRightClick() {
-        calculator2.inputCompleteNumber(calculator1.getAnswer())
-        updateDisplay(2, calculator2.inputCompleteNumber(calculator1.getAnswer()))
+        rightCalculator.inputCompleteNumber(leftCalculator.getAnswer())
+        updateDisplay(
+            CalculatorId.RIGHT,
+            rightCalculator.inputCompleteNumber(leftCalculator.getAnswer())
+        )
     }
+}
+
+enum class CalculatorId {
+    LEFT, RIGHT
 }

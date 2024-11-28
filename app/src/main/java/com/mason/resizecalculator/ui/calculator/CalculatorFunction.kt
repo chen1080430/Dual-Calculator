@@ -3,7 +3,7 @@ package com.mason.resizecalculator.ui.calculator
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class CalculatorFeature {
+class CalculatorFunction {
     private var formula = StringBuilder()
     private var currentNumber = StringBuilder()
     private var answer = BigDecimal.ZERO
@@ -249,12 +249,19 @@ class CalculatorFeature {
                     char.isDigit() || char == '.' -> {
                         currentNumber.append(char)
                     }
+
                     char in setOf('+', '-', '*', '/') -> {
                         if (currentNumber.isNotEmpty()) {
                             numbers.add(BigDecimal(currentNumber.toString()))
                             currentNumber.clear()
                         }
-                        if (char == '-' && (index == 0 || formula[index - 1] in setOf('+', '-', '*', '/'))) {
+                        if (char == '-' && (index == 0 || formula[index - 1] in setOf(
+                                '+',
+                                '-',
+                                '*',
+                                '/'
+                            ))
+                        ) {
                             currentNumber.append('-')
                         } else {
                             operators.add(char)
@@ -282,6 +289,7 @@ class CalculatorFeature {
                             }
                             numbers[i].divide(numbers[i + 1], 10, RoundingMode.HALF_UP)
                         }
+
                         else -> throw IllegalStateException("未知運算符")
                     }
 
