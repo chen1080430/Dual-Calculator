@@ -450,6 +450,43 @@ class CalculatorFunctionTest {
         assertEquals("0.123456789", result5)
     }
 
+    @Test
+    fun `CompleteNumber_WhenAddCompleteNumber_ShouldCalculateCorrectly`() {
+        calculatorFunction.clear()
+        calculatorFunction.inputNumber(1)
+        calculatorFunction.inputNumber(2)
+        val inputNumber = calculatorFunction.inputCompleteNumber(12345.0)
+        assertEquals("12345", inputNumber.result)
+
+        calculatorFunction.inputOperation(PLUS)
+        calculatorFunction.inputCompleteNumber(9999.0)
+        val result1 = calculatorFunction.calculate().result
+        assertEquals("22344", result1)
+
+        calculatorFunction.inputOperation(MINUS)
+        calculatorFunction.inputCompleteNumber(19.9905)
+        val result2 = calculatorFunction.calculate().result
+        assertEquals("22324.0095", result2)
+
+        calculatorFunction.inputCompleteNumber(98765.543)
+        assertEquals("98765.543", calculatorFunction.calculate().result)
+
+        calculatorFunction.inputCompleteNumber(9876543.0)
+        calculatorFunction.toggleSign()
+        assertEquals("-9876543", calculatorFunction.calculate().result)
+
+        calculatorFunction.toggleSign()
+        calculatorFunction.toggleSign()
+        calculatorFunction.calculatePercent()
+        calculatorFunction.calculatePercent()
+        assertEquals("-987.6543", calculatorFunction.calculate().result)
+
+        calculatorFunction.clear()
+        calculatorFunction.inputCompleteNumber(11223344.0)
+        calculatorFunction.delete()
+        assertEquals("1122334", calculatorFunction.calculate().result)
+    }
+
     companion object {
         const val MULTIPLY = "*"
         const val DIVIDE = "/"
