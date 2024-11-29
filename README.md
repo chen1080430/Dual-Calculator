@@ -16,6 +16,8 @@
 
 影片長度: 55 秒
 
+APK: [APKS/DualCalculator-release-v1004.apk](https://github.com/chen1080430/Dual-Calculator/blob/main/APKS/DualCalculator-release-v1004.apk)
+
 ## 核心檔案結構
 
  app/src/main  
