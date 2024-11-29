@@ -92,4 +92,13 @@ APK: [APKS/DualCalculator-release-v1004.apk](https://github.com/chen1080430/Dual
 ![https://github.com/chen1080430/Dual-Calculator/blob/main/dual-calculator-interview.gif?raw=true](https://github.com/chen1080430/Dual-Calculator/blob/main/Resources/DualCalculator_release_state1.png?raw=true)
 
 
+## 第三方套件
+
+本專案使用了以下第三方套件：
+
+- **Tooltips**：一個用於在 Android 應用程式中輕鬆添加工具提示的套件。詳細資訊請參考 [Tooltips GitHub 頁面](https://github.com/tomergoldst/tooltips)。
+
+## 授權資訊
+
+本專案遵循 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)。在使用本專案時，請遵守此授權條款。
 
