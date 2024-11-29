@@ -85,4 +85,9 @@
 
 
 ## Google Play Alpha 版本發佈狀態：審核中 
+![https://github.com/chen1080430/Dual-Calculator/blob/main/dual-calculator-interview.gif?raw=true](https://github.com/chen1080430/Dual-Calculator/blob/main/Resources/DualCalculator_release_state.png?raw=true)
+
+![https://github.com/chen1080430/Dual-Calculator/blob/main/dual-calculator-interview.gif?raw=true](https://github.com/chen1080430/Dual-Calculator/blob/main/Resources/DualCalculator_release_state1.png?raw=true)
+
+
 
