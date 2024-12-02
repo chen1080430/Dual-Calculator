@@ -86,10 +86,14 @@ APK: [APKS/DualCalculator-release-v1004.apk](https://github.com/chen1080430/Dual
 - 狀態管理
 
 
-## Google Play Alpha 版本發佈狀態：審核中 
-![https://github.com/chen1080430/Dual-Calculator/blob/main/dual-calculator-interview.gif?raw=true](https://github.com/chen1080430/Dual-Calculator/blob/main/Resources/DualCalculator_release_state.png?raw=true)
+## Google Play Alpha 版本發佈狀態：封測中（可加入封測下載應用） 
 
-![https://github.com/chen1080430/Dual-Calculator/blob/main/dual-calculator-interview.gif?raw=true](https://github.com/chen1080430/Dual-Calculator/blob/main/Resources/DualCalculator_release_state1.png?raw=true)
+android 裝置加入封測： https://play.google.com/store/apps/details?id=com.mason.resizecalculator  
+![android testing](https://github.com/chen1080430/Dual-Calculator/blob/main/Resources/android_testing.jpg?raw=true)  
+
+
+網頁版加入封測： https://play.google.com/apps/testing/com.mason.resizecalculator  
+![become tester](https://github.com/chen1080430/Dual-Calculator/blob/main/Resources/become_a_tester.png?raw=true)
 
 
 ## 第三方套件
